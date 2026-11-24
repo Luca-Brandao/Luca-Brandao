@@ -1,49 +1,47 @@
-<div align="center">
+![Luca Brandao - web development, business systems and data reporting](profile-banner.svg)
 
-# Luca Brandao
+## Hi, I'm Luca
 
-**Business Information Systems student**  
-Web development · Business systems · Data and reporting
+I'm a final-year **Business Information Systems student at STADIO**. I build web experiences and business application features, with an interest in the processes and data behind them.
 
-</div>
+My work includes inventory automation, order management, financial dashboards and personal websites. I enjoy taking an idea through to an interface people can use.
 
-## About me
+## Passion projects
 
-I'm a final-year Business Information Systems student with practical experience building web application features for inventory management, order processing and financial reporting. I enjoy turning business requirements into useful software.
+| Project | What it demonstrates | Technology |
+| --- | --- | --- |
+| [Birthday Comic Demo](https://github.com/Luca-Brandao/Birthday-Comic-Demo) | A comic-style microsite with chapter navigation, image viewing, bilingual interface controls, message cards and browser audio | HTML, CSS, JavaScript, Node.js |
+| [Wedding Website Demo](https://github.com/Luca-Brandao/Wedding-Website-Demo) | An animated invitation, responsive event sections, countdown, photo galleries and an RSVP presentation | React, TypeScript, Vite, Framer Motion, Tailwind CSS |
 
-My work combines application development with an understanding of databases, business processes and data analysis.
+These public portfolio editions use fictional content and placeholder illustrations. The original personal projects and their private content are kept separate.
 
-## Selected projects
+**Explore the live demos:** [Birthday comic](https://luca-brandao.github.io/Birthday-Comic-Demo/) · [Wedding website](https://luca-brandao.github.io/Wedding-Website-Demo/)
+
+## Academic project experience
 
 ### Juno Aurora Haven
 
-**Lead developer within a five-person academic project team · 2026**
+**One of the lead developers in a five-person final-year project team · 2026**
 
-Contributed to a web application for a children's home, focusing on inventory administration, order management and financial reporting.
+Contributed to a web application for a children's home, focusing on:
 
-- Automated stock quantity updates following orders, returns and cancellations.
-- Built product administration, configurable low-stock thresholds and order cancellation features.
-- Developed financial dashboards to track e-commerce income, profits and donations.
-- Implemented content filtering and automatic report generation in PDF and Excel formats.
+- Automatic stock updates after orders, returns and cancellations
+- Product administration, low-stock thresholds and order management
+- Financial dashboards for e-commerce income, profits and donations
+- Automatic PDF and Excel report generation
 
-**Project technologies:** Node.js, Express, Prisma and MySQL.
-
-### Wedding website
-
-**Independent development project**
-
-Built a predominantly static wedding website and integrated an OurSVP widget to support guest RSVPs.
+**Project stack:** Node.js, Express, Prisma and MySQL.
 
 ## Technologies and tools
 
 | Area | Experience |
 | --- | --- |
-| Web development | Node.js, Express, Prisma |
-| Programming | Python and Java through academic coursework |
-| Databases and data | SQL, MySQL and CSV processing in Python |
-| Platforms and deployment | Supabase, Cloudflare Pages |
-| Reporting and analysis | Microsoft Excel, automated PDF and Excel reports |
-| Development tools | GitHub, Claude |
+| Web development | React, TypeScript, JavaScript, Node.js, Express, HTML and CSS |
+| Databases | SQL, MySQL, Prisma, Supabase |
+| Programming coursework | Python, Java and CSV processing in Python |
+| Reporting and analysis | Microsoft Excel, automated PDF and Excel reporting |
+| Platforms and deployment | Cloudflare Pages, GitHub Pages, Vite |
+| Development tools | GitHub, **ChatGPT Codex**, Claude |
 | Systems analysis | Requirements analysis, UML modelling and technical documentation |
 
 ## Education

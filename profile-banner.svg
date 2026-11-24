@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 320" role="img" aria-label="Luca Brandao - web development, business systems and data reporting">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#12243c"/><stop offset=".55" stop-color="#164e63"/><stop offset="1" stop-color="#3c3672"/></linearGradient><linearGradient id="line"><stop stop-color="#67e8f9"/><stop offset="1" stop-color="#a5b4fc"/></linearGradient></defs>
+<rect width="1200" height="320" rx="20" fill="url(#bg)"/>
+<g fill="none" stroke="#9bd6e2" opacity=".13"><circle cx="1080" cy="100" r="155"/><circle cx="1080" cy="100" r="200"/><circle cx="1080" cy="100" r="245"/><path d="M820 0v320M900 0v320M980 0v320M1060 0v320M1140 0v320M780 60h420M780 140h420M780 220h420"/></g>
+<rect x="58" y="59" width="58" height="5" rx="2.5" fill="url(#line)"/>
+<text x="58" y="132" fill="#ffffff" font-family="Segoe UI,Arial,sans-serif" font-size="54" font-weight="700">Luca Brandao</text>
+<text x="61" y="180" fill="#d9eff5" font-family="Segoe UI,Arial,sans-serif" font-size="23">Web development · Business systems · Data and reporting</text>
+<g font-family="Segoe UI,Arial,sans-serif" font-size="17" fill="#e5f6fa"><rect x="60" y="220" width="114" height="39" rx="19" fill="#ffffff" fill-opacity=".09"/><text x="87" y="246">Node.js</text><rect x="185" y="220" width="104" height="39" rx="19" fill="#ffffff" fill-opacity=".09"/><text x="214" y="246">React</text><rect x="300" y="220" width="145" height="39" rx="19" fill="#ffffff" fill-opacity=".09"/><text x="326" y="246">TypeScript</text><rect x="456" y="220" width="86" height="39" rx="19" fill="#ffffff" fill-opacity=".09"/><text x="483" y="246">SQL</text></g>
+</svg>
