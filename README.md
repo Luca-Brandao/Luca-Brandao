@@ -16,9 +16,7 @@
 
 I'm a final-year Business Information Systems student at STADIO in South Africa. I enjoy web development, programming and understanding how software fits into a business. My projects range from personal websites to Python simulations, Java applications and a full-stack course platform.
 
-For my final-year team project, I worked as one of the lead developers on Juno Aurora Haven, developing administration features and reporting for a children's home. I like working through requirements with a team and turning them into practical features. Outside of development, I'm usually gaming or working on a personal website.
-
-I'm available for an entry-level opportunity from **January 2027**.
+For my final-year team project, I worked as one of the lead developers on Juno Aurora Haven, developing administration features and reporting for a children's home. I like working through requirements with a team and turning them into practical features. Outside of development, I'm usually gaming or spending time with friends and family.
 
 ## Projects
 
