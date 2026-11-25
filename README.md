@@ -7,8 +7,8 @@ Business Information Systems student at STADIO
 [Email](mailto:lucabrandao366@gmail.com) &nbsp; / &nbsp; [LinkedIn](https://www.linkedin.com/in/luca-brandao-a90961352/)
 
 <picture>
-  <source media="(prefers-reduced-motion: reduce)" srcset="assets/n64-platformer-v2-still.png">
-  <img src="assets/n64-platformer-v2.gif" width="900" alt="An original N64-inspired 3D platformer, with a character based on Luca exploring a low-poly island.">
+  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-platformer-navy-v2-still.png">
+  <img src="assets/pixel-platformer-navy-v2.gif" width="900" alt="A pixel-art platformer starring Luca, running through a navy mountain forest.">
 </picture>
 
 </div>
