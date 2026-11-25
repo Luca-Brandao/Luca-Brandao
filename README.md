@@ -6,8 +6,8 @@
 </picture>
 
 <picture>
-  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-code-adventure-v10-still.png">
-  <img src="assets/pixel-code-adventure-v10.gif" width="800" alt="Luca's pixel-art rooftop game: stomp robot bugs, dodge flying sentries and collect icons before levelling up.">
+  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-code-adventure-v11-still.png">
+  <img src="assets/pixel-code-adventure-v11.gif" width="800" alt="Luca's pixel-art rooftop adventure: collect icons, unlock a blaster, defeat the sentinel and enter a portal before levelling up.">
 </picture>
 
 </div>
