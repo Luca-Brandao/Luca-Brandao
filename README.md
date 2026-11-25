@@ -23,8 +23,8 @@ For my final-year team project, I worked as one of the lead developers on Juno A
 | Project | What I worked on | Links |
 | :--- | :--- | :--- |
 | **Juno Aurora Haven** | Web application developed in a five-person team for a children's home. I contributed administration, stock automation and reporting features using Node.js, Express, Prisma and MySQL. | [Website](https://junoaurorahaven.org/) |
-| **Wedding Website** | A predominantly static wedding website with an OurSVP integration. The public demo uses fictional event details, with responsive pages, galleries and an animated invitation. | [Demo](https://luca-brandao.github.io/Wedding-Website-Demo/) · [Code](https://github.com/Luca-Brandao/Wedding-Website-Demo) |
-| **Birthday Comic** | A comic-style website with chapter navigation, a photo lightbox, bilingual controls and browser-generated audio. HTML, CSS and JavaScript. | [Demo](https://luca-brandao.github.io/Birthday-Comic-Demo/) · [Code](https://github.com/Luca-Brandao/Birthday-Comic-Demo) |
+| **Wedding Website** | A predominantly static wedding website with an OurSVP integration. The public demo uses fictional event details, with responsive pages, galleries and an animated invitation. | [Demo](https://luca-brandao.github.io/Wedding-Website-Demo/) &middot; [Code](https://github.com/Luca-Brandao/Wedding-Website-Demo) |
+| **Birthday Comic** | A comic-style website with chapter navigation, a photo lightbox, bilingual controls and browser-generated audio. HTML, CSS and JavaScript. | [Demo](https://luca-brandao.github.io/Birthday-Comic-Demo/) &middot; [Code](https://github.com/Luca-Brandao/Birthday-Comic-Demo) |
 
 ### <img src="assets/section-coursework.svg" width="22" height="22" alt=""> Coursework
 
@@ -40,26 +40,26 @@ The Cerebrum and Ubunifu repositories keep their development stages together, wi
 ## <img src="assets/section-tech.svg" width="22" height="22" alt=""> Tech stack
 
 **Languages**  
-JavaScript · SQL · Python · Java
+JavaScript &middot; SQL &middot; Python &middot; Java
 
 **Web and data**  
-HTML · CSS · Bootstrap · Node.js · Express · Prisma · MySQL
+HTML &middot; CSS &middot; Bootstrap &middot; Node.js &middot; Express &middot; Prisma &middot; MySQL
 
 **Tools**  
-GitHub · Excel · Supabase · Cloudflare Pages
+GitHub &middot; Excel &middot; Supabase &middot; Cloudflare Pages
 
 **AI tools**  
-Claude · ChatGPT Codex
+Claude &middot; ChatGPT Codex
 
 I've used Node.js, Express, Prisma and MySQL on Juno. Python, Java, SQL, Flask, systems analysis and UML form part of my coursework. My public wedding demo also uses React, TypeScript and Tailwind CSS.
 
 ## <img src="assets/section-education.svg" width="22" height="22" alt=""> Education
 
-**Bachelor of Business Information Systems** · STADIO Higher Education  
-2024-2026 · NQF Level 7 · Nearing completion
+**Bachelor of Business Information Systems** &middot; STADIO Higher Education  
+2024-2026 &middot; NQF Level 7 &middot; Nearing completion
 
-**Certificate in Full Stack Development** · FNB App Academy  
-Issued by IT Varsity · 2025
+**Certificate in Full Stack Development** &middot; FNB App Academy  
+Issued by IT Varsity &middot; 2025
 
 ## <img src="assets/section-connect.svg" width="22" height="22" alt=""> Connect
 
