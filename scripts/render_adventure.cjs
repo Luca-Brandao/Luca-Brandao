@@ -151,24 +151,18 @@ function pixelText(s,y,scale,color){
 }
 function levelUp(n){
  p=new Uint8Array(W*H);const t=(n-RUN_FRAMES)/FPS;
- rect(0,0,W,H,14);rect(0,155,W,53,13);
- // Stepped frame, corner accents and restrained confetti use the profile palette.
- rect(30,23,340,164,1);rect(32,25,336,160,14);
- rect(37,23,326,1,3);rect(37,186,326,1,3);rect(30,30,1,150,3);rect(369,30,1,150,3);
- for(const [x,y,c] of [[30,23,22],[357,23,23],[30,175,25],[357,175,24]]){rect(x+3,y,10,2,c);rect(x,y+3,2,9,c);}
- for(let j=0;j<22;j++){
-  const x=45+(j*47)%310,y=34+((j*31+t*(5+j%4))%138),c=22+j%4;
-  if((x<103||x>299)||(y<51||y>159)){rect(x,y,j%3===0?2:1,2,c);if(j%5===0){rect(x-1,y+1,3,1,c);}}
- }
- // Upward chevrons cue the level transition before the large title.
- for(let j=0;j<2;j++){const yy=34+j*5;poly([[192,yy+5],[200,yy],[208,yy+5],[208,yy+8],[200,yy+3],[192,yy+8]],j?22:24);}
- const lift=Math.round(Math.exp(-t*8)*4);
- pixelText('LEVEL UP!',61+lift,3,[22,22,22,22,22,22,23,23,24]);
- pixelText('01 > 02',94,1,7);
- for(let j=0;j<4;j++)token(146+j*36,124,j);
- // A small victory pose keeps the ending recognisably Luca's game.
- rect(183,183,35,1,1);const hop=Math.round(Math.abs(Math.sin(t*Math.PI*2))*2);
- character(187,183-hop,0,false,true);
+ rect(0,0,W,H,14);
+ // A quiet results card: one title, one level change and Luca's victory pose.
+ rect(66,35,268,147,3);rect(67,36,266,145,14);
+ rect(67,36,266,1,1);rect(181,35,38,1,22);
+ rect(66,35,7,1,22);rect(327,181,7,1,23);
+ const lift=Math.round(Math.exp(-t*8)*3);
+ pixelText('LEVEL UP',60+lift,3,22);
+ pixelText('01 > 02',98,1,[7,7,7,23,7,22,22]);
+ // One small celebratory hop settles into a still pose during the readable hold.
+ const q=Math.min(1,t/.5),hop=Math.round(Math.sin(q*Math.PI)*4);
+ rect(185,170,31,1,1);
+ character(187,170-hop,0,false,true);
  return p;
 }
 const DITHER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
@@ -194,8 +188,8 @@ function main(){fs.mkdirSync('assets',{recursive:true});
 // Validate the circular scene at its exact boundary before encoding.
 const a0=Buffer.from(frame(0)),a1=Buffer.from(frame(FRAMES-1));if(!a0.equals(a1))throw Error('Scene loop boundary differs');
 if(process.argv.includes('--preview'))for(const n of [0,350,400,412,450,500,549])fs.writeFileSync('assets/polish-check-'+n+'.png',png(scale(frame(n)),W*S,H*S));
-fs.mkdirSync('assets',{recursive:true});let head=Buffer.alloc(13);head.write('GIF89a');head.writeUInt16LE(W*S,6);head.writeUInt16LE(H*S,8);head[10]=0xd5;let parts=[head,Buffer.from(pal.flat()),Buffer.from([0x21,0xff,11]),Buffer.from('NETSCAPE2.0'),Buffer.from([3,1,0,0,0])];let previous;for(let n=0;n<FRAMES;n++){let a=scale(frame(n));if(n===70)fs.writeFileSync('assets/pixel-code-adventure-v8-still.png',png(a,W*S,H*S));let x0=0,y0=0,x1=W*S-1,y1=H*S-1;
+fs.mkdirSync('assets',{recursive:true});let head=Buffer.alloc(13);head.write('GIF89a');head.writeUInt16LE(W*S,6);head.writeUInt16LE(H*S,8);head[10]=0xd5;let parts=[head,Buffer.from(pal.flat()),Buffer.from([0x21,0xff,11]),Buffer.from('NETSCAPE2.0'),Buffer.from([3,1,0,0,0])];let previous;for(let n=0;n<FRAMES;n++){let a=scale(frame(n));if(n===70)fs.writeFileSync('assets/pixel-code-adventure-v9-still.png',png(a,W*S,H*S));let x0=0,y0=0,x1=W*S-1,y1=H*S-1;
 if(previous){x0=W*S;y0=H*S;x1=0;y1=0;for(let y=0;y<H*S;y++)for(let x=0;x<W*S;x++)if(a[y*W*S+x]!==previous[y*W*S+x]){x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}if(x0>x1){x0=0;y0=0;x1=0;y1=0;}}
 let ww=x1-x0+1,hh=y1-y0+1,crop=Buffer.alloc(ww*hh);for(let y=0;y<hh;y++)a.copy(crop,y*ww,(y+y0)*W*S+x0,(y+y0)*W*S+x0+ww);
-let desc=Buffer.alloc(10);desc[0]=0x2c;desc.writeUInt16LE(x0,1);desc.writeUInt16LE(y0,3);desc.writeUInt16LE(ww,5);desc.writeUInt16LE(hh,7);parts.push(Buffer.from([0x21,0xf9,4,4,2,0,0,0]),desc,lzw(crop));previous=a;}parts.push(Buffer.from([0x3b]));let gif=Buffer.concat(parts);fs.writeFileSync('assets/pixel-code-adventure-v8.gif',gif);console.log(JSON.stringify({frames:FRAMES,fps:FPS,seconds:FRAMES/FPS,gameSeconds:RUN_FRAMES/FPS,levelUpSeconds:(FRAMES-RUN_FRAMES)/FPS,width:W*S,height:H*S,bytes:gif.length}));}
+let desc=Buffer.alloc(10);desc[0]=0x2c;desc.writeUInt16LE(x0,1);desc.writeUInt16LE(y0,3);desc.writeUInt16LE(ww,5);desc.writeUInt16LE(hh,7);parts.push(Buffer.from([0x21,0xf9,4,4,2,0,0,0]),desc,lzw(crop));previous=a;}parts.push(Buffer.from([0x3b]));let gif=Buffer.concat(parts);fs.writeFileSync('assets/pixel-code-adventure-v9.gif',gif);console.log(JSON.stringify({frames:FRAMES,fps:FPS,seconds:FRAMES/FPS,gameSeconds:RUN_FRAMES/FPS,levelUpSeconds:(FRAMES-RUN_FRAMES)/FPS,width:W*S,height:H*S,bytes:gif.length}));}
 main();

@@ -1,13 +1,13 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-intro-v2-still.png">
-  <img src="assets/pixel-intro-v2.gif" width="800" alt="Luca Brandao — Final-year Business Information Systems student at STADIO.">
+  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-intro-v3-still.png">
+  <img src="assets/pixel-intro-v3.gif" width="800" alt="Luca Brandao — Final-year Business Information Systems student at STADIO.">
 </picture>
 
 <picture>
-  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-code-adventure-v8-still.png">
-  <img src="assets/pixel-code-adventure-v8.gif" width="800" alt="Luca's pixel-art rooftop game: four collectible icons, then a LEVEL UP victory screen.">
+  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-code-adventure-v9-still.png">
+  <img src="assets/pixel-code-adventure-v9.gif" width="800" alt="Luca's pixel-art rooftop game: four collectible icons, then a LEVEL UP victory screen.">
 </picture>
 
 </div>
