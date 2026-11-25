@@ -6,8 +6,8 @@
 </picture>
 
 <picture>
-  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-code-adventure-v4-still.png">
-  <img src="assets/pixel-code-adventure-v4.gif" width="800" alt="Luca in a pixel-art coding adventure, collecting web, code, book and game icons across a navy city skyline.">
+  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-code-adventure-v5-still.png">
+  <img src="assets/pixel-code-adventure-v5.gif" width="800" alt="Luca jumping over rooftop obstacles and collecting web, code, game and book icons in a layered pixel-art city.">
 </picture>
 
 </div>
@@ -16,7 +16,7 @@
 
 I'm a final-year Business Information Systems student at STADIO in South Africa. I enjoy web development, programming and understanding how software fits into a business. My projects range from personal websites to Python simulations, Java applications and a full-stack course platform.
 
-For my final-year team project, I worked as one of the lead developers on Juno Aurora Haven, developing administration features and reporting for a children's home. I like working through requirements with a team and turning them into practical features. Outside of development, I'm usually gaming or spending time with friends and family.
+For my final-year team project, I worked as one of the lead developers on Juno Aurora Haven, developing administration features and reporting for a children's home. I like working through requirements with a team and turning them into practical features. Outside of development, I'm usually gaming or spending time with family and friends.
 
 ## Projects
 
