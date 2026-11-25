@@ -1,8 +1,9 @@
 <div align="center">
 
-# Luca Brandao
-
-Final-year Business Information Systems student at STADIO
+<picture>
+  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-intro-v1-still.png">
+  <img src="assets/pixel-intro-v1.gif" width="800" alt="Luca Brandao — Final-year Business Information Systems student at STADIO.">
+</picture>
 
 <picture>
   <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-code-adventure-v4-still.png">
@@ -31,15 +32,12 @@ I'm available for an entry-level opportunity from **January 2027**.
 
 | Project | Focus | Source |
 | :--- | :--- | :--- |
-| **Cerebrum Static Website** | HTML/CSS course pages, navigation and layouts. | [Repository](https://github.com/Luca-Brandao/Cerebrum-Static-Website) |
-| **Cerebrum Interactive Website** | JavaScript interactions, forms, responsive pages and testimonials. | [Repository](https://github.com/Luca-Brandao/Cerebrum-Interactive-Website) |
-| **Cerebrum Course Platform** | Bootstrap frontend, Flask course/contact API and Express testimonials service. | [Repository](https://github.com/Luca-Brandao/Cerebrum-Course-Platform) |
-| **Ubunifu Library Foundations** | Java classes, encapsulation, arrays, borrowing and returns. | [Repository](https://github.com/Luca-Brandao/Ubunifu-Library-Foundations) |
-| **Ubunifu Library Management** | Inheritance, collections, catalogue searching and member operations. | [Repository](https://github.com/Luca-Brandao/Ubunifu-Library-Management) |
+| **Cerebrum Online IT Courses** | One website across three stages: HTML/CSS, JavaScript, then Flask and Express APIs. | [Repository](https://github.com/Luca-Brandao/Cerebrum-Course-Platform) |
+| **Ubunifu Library** | Java library application, from classes and arrays to collections, inheritance and extended borrowing/member operations. | [Repository](https://github.com/Luca-Brandao/Ubunifu-Library-Management) |
 | **Savanna Ecosystem Simulation** | Python population modelling, random events and text reporting. | [Repository](https://github.com/Luca-Brandao/Savanna-Ecosystem-Simulation) |
 | **African History Quiz** | Python dictionaries, randomised questions, input validation and score tracking. | [Repository](https://github.com/Luca-Brandao/African-History-Quiz) |
 
-Each repository includes its source, setup instructions and a detailed project README. Sample identities are fictional.
+The Cerebrum and Ubunifu repositories keep their development stages together, with setup instructions and a detailed README for each stage. Sample identities are fictional.
 
 ## Tech stack
 
