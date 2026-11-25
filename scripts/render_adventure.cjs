@@ -15,18 +15,33 @@ function poly(pts,c){let min=Math.floor(Math.min(...pts.map(q=>q[1]))),max=Math.
 function circle(x,y,r,c){for(let j=-r;j<=r;j++){let dx=Math.floor(Math.sqrt(r*r-j*j));rect(x-dx,y+j,dx*2+1,1,c);}}
 const font={L:['100','100','100','100','111'],U:['101','101','101','101','111'],C:['111','100','100','100','111'],A:['010','101','111','101','101'],'0':['111','101','101','101','111'],'1':['010','110','010','010','111'],X:['101','101','010','101','101'],'/':['001','001','010','100','100'],'2':['110','001','010','100','111'],'3':['110','001','010','001','110'],'4':['101','101','111','001','001'],'5':['111','100','110','001','110'],'6':['011','100','111','101','111'],'7':['111','001','010','010','010'],'8':['111','101','111','101','111'],'9':['111','101','111','001','110']};
 function text(s,x,y,c){for(let a of s){if(font[a])font[a].forEach((r,j)=>[...r].forEach((v,i)=>{if(v==='1')rect(x+i,y+j,1,1,c)}));x+=4;}}
-function character(x,feet,t,jump){let phase=Math.floor(t*12)%8,leg=jump?3:Math.round(Math.sin(phase*Math.PI/4)*4),bob=jump?0:(phase%4===0?0:1),y=feet-36+bob;
-// Individual pixel clusters match the supplied portrait: brown hair, black glasses and tee.
-rect(x+5,y+27,6,5,51);rect(x+12,y+27,6,5,52);
-if(jump){rect(x+2,y+29,6,4,51);rect(x+1,y+32,7,2,41);rect(x+1,y+32,3,1,7);rect(x+14,y+30,6,5,52);rect(x+15,y+34,8,2,41);rect(x+15,y+34,3,1,7);}
-else{rect(x+4+leg,y+30,5,5,52);rect(x+12-leg,y+30,5,5,51);rect(x+3+leg,y+34,8,2,41);rect(x+12-leg,y+34,8,2,41);rect(x+3+leg,y+34,3,1,7);rect(x+12-leg,y+34,3,1,7);}
-poly([[x+4,y+17],[x+15,y+16],[x+20,y+23],[x+18,y+29],[x+4,y+29],[x+1,y+23]],49);
-rect(x+5,y+18,12,10,47);rect(x+6,y+20,9,7,48);rect(x+8,y+18,7,2,41);rect(x+7,y+18,2,1,50);
-let arm=jump?-3:Math.round(Math.sin(phase*Math.PI/4)*3);rect(x+1,y+20,4,6,48);rect(x+1-arm,y+24,5,3,45);rect(x-arm,y+26,4,3,45);rect(x+17,y+20,4,6,47);rect(x+18+arm,y+24,4,3,46);rect(x+19+arm,y+26,3,3,46);
+// Eight hand-posed run silhouettes: contact, recoil, passing and lift on each leg.
+const RUN=[[[5,31,2,35],[16,31,19,35]],[[7,31,5,32],[15,31,17,35]],[[12,29,13,31],[12,32,11,35]],[[16,29,19,32],[9,32,6,35]],[[16,31,19,35],[5,31,2,35]],[[15,31,17,35],[7,31,5,32]],[[12,32,11,35],[12,29,13,31]],[[9,32,6,35],[16,29,19,32]]];
+function leg(x,y,hip,k,color){
+ const [kx,ky,fx,fy]=k;
+ poly([[x+hip-2,y+27],[x+hip+2,y+27],[x+kx+2,y+ky],[x+fx+2,y+fy],[x+fx-2,y+fy],[x+kx-2,y+ky]],color);
+ rect(x+fx-2,y+fy-1,8,2,41);rect(x+fx-1,y+fy-1,4,1,7);
+}
+function arm(x,y,sx,sy,ex,ey,hx,hy,color){
+ poly([[x+sx-2,y+sy],[x+sx+2,y+sy],[x+ex+2,y+ey],[x+hx+2,y+hy],[x+hx-2,y+hy],[x+ex-2,y+ey]],color);
+ rect(x+hx-1,y+hy-1,3,3,45);
+}
+function character(x,feet,t,jump){
+ const phase=Math.floor(t*12)%8,air=(t%2),rise=air<1.01,bob=jump?0:[0,1,2,1,0,1,2,1][phase],y=feet-36-bob;
+ if(jump){leg(x,y,8,rise?[5,30,3,32]:[7,31,5,34],52);leg(x,y,15,rise?[17,29,20,33]:[17,31,18,35],51);}
+ else{leg(x,y,8,RUN[phase][0],52);leg(x,y,15,RUN[phase][1],51);}
+ const swing=[-3,-2,0,2,3,2,0,-2][phase];
+ arm(x,y,4,20,jump?1:3,24,jump?0:2-swing,jump?24:27,48);
+ poly([[x+5,y+17],[x+15,y+16],[x+20,y+22],[x+18,y+29],[x+4,y+29],[x+1,y+23]],49);
+ rect(x+5,y+18,12,10,47);rect(x+7,y+20,8,7,48);rect(x+8,y+18,7,2,41);rect(x+7,y+18,2,1,50);rect(x+6,y+27,10,1,50);
+ if(jump)arm(x,y,17,20,20,rise?19:22,22,rise?17:24,47);
+ else arm(x,y,17,20,19,24,19+swing,26,47);
 rect(x+6,y+4,13,12,44);rect(x+8,y+5,12,11,45);rect(x+11,y+7,9,9,46);rect(x+19,y+9,2,3,45);rect(x+8,y+15,9,3,45);
 rect(x+5,y+2,14,5,42);rect(x+7,y,8,3,42);rect(x+12,y+1,6,4,43);rect(x+4,y+4,4,6,42);rect(x+8,y+3,5,3,43);rect(x+15,y+3,5,4,42);rect(x+9,y+1,4,2,44);rect(x+7,y+2,3,1,45);rect(x+17,y+6,3,2,43);
 rect(x+7,y+8,6,4,41);rect(x+15,y+8,6,4,41);rect(x+13,y+9,2,1,41);rect(x+8,y+9,4,2,46);rect(x+16,y+9,4,2,46);rect(x+10,y+9,1,2,41);rect(x+18,y+9,1,2,41);rect(x+8,y+8,3,1,6);rect(x+16,y+8,3,1,6);rect(x+8,y+9,1,2,9);rect(x+16,y+9,1,2,9);
 rect(x+14,y+14,4,1,42);rect(x+13,y+13,1,1,42);rect(x+18,y+13,1,1,42);rect(x+9,y+13,1,1,43);
+ // A short blink sits inside the glasses and repeats at the same point of the loop.
+ if(t%4>3.76&&t%4<3.88){rect(x+9,y+9,3,2,46);rect(x+17,y+9,3,2,46);rect(x+9,y+10,3,1,42);rect(x+17,y+10,3,1,42);}
 }
 
 // An eight-second city run. Four obstacles and pickups share one physical timeline.
@@ -52,6 +67,32 @@ function dust(t,event){
  if(age>.22)return;
  for(let j=0;j<4;j++){const q=age/.22,x=PLAYER_X+8-j*4-q*(10+j*2),y=GROUND-2-Math.sin(q*Math.PI)*(2+j%2);rect(x,y,q<.45?3:2,1,j%2?4:3);}
 }
+function obstacle(center,kind,t){
+ const x=center-14;
+ if(kind===0){
+  rect(x,161,28,13,2);rect(x,161,28,1,22);rect(x+2,163,24,2,3);
+  for(let row=0;row<3;row++)rect(x+4,166+row*2,20,1,1);
+  rect(x+25,164,2,10,1);rect(x+3,164,1,1,7);
+ }else if(kind===1){
+  rect(x-1,158,30,16,27);rect(x-2,156,32,3,3);rect(x-1,156,30,1,23);
+  for(let row=0;row<3;row++){const yy=160+row*5;rect(x,yy,28,1,2);for(let col=0;col<4;col++)rect(x+col*9+(row%2?4:0),yy+1,1,4,2);}
+ }else if(kind===2){
+  rect(x-2,166,32,8,2);rect(x+4,162,20,12,3);rect(x+3,161,22,2,23);rect(x+7,164,14,8,1);
+  const rotor=Math.floor(t*8)%4;
+  rect(x+12,165,4,6,4);if(rotor%2){rect(x+9,167,10,2,6);}else{rect(x+13,165,2,6,6);}
+  rect(x+10,167,7,2,2);rect(x+13,168,1,1,8);
+ }else{
+  rect(x,164,28,10,29);rect(x-1,163,30,2,25);rect(x+2,166,24,1,27);rect(x+3,171,22,1,27);
+  for(let j=0;j<4;j++){const xx=x+5+j*6,h=5+(j%2)*2;rect(xx,163-h,1,h,22);rect(xx-2,161-h,3,3,26);rect(xx+1,158-h+3,3,3,31);}
+ }
+}
+function pickupFlight(t){
+ const cycle=Math.floor((t-1)/2),age=t-(1+cycle*2),kind=((cycle%4)+4)%4;
+ if(age<0||age>.56)return;
+ const destination=352+kind*9;
+ function point(a){const q=Math.min(1,a/.56),u=1-q;return[138*u*u+2*255*u*q+destination*q*q,112*u*u+2*5*u*q+17*q*q];}
+ for(let j=3;j>=0;j--){const a=age-j*.035;if(a<0)continue;const [xx,yy]=point(a);rect(xx,yy,j===0?3:1,j===0?3:1,j===0?22+kind:3);}
+}
 function drawPlayer(feet,t,m){
  const scene=p;p=new Uint8Array(W*H);character(PLAYER_X,feet,t,m.jump);const sprite=p;p=scene;
  const anticipation=m.a>=.36&&m.a<.46,landing=m.a>=1.56&&m.a<1.68,squash=anticipation?.9:(landing?.93:1),lean=m.jump?(m.a<1.01?1:0):0;
@@ -76,7 +117,7 @@ function frame(n){p=new Uint8Array(W*H);const t=n/FPS,u=n/FRAMES,m=motion(t),scr
  for(let k=-2;k<6;k++)for(let j=0;j<8;j++){
   const x=k*400+j*50-u*800,h=19+(j*11)%28,y=174-h;rect(x,y,43,h,j%3===0?30:19);rect(x,y,43,2,3);rect(x+2,y+2,39,1,17);
   for(let row=0;row<Math.floor((h-8)/9);row++)for(let col=0;col<4;col++)rect(x+6+col*9,y+7+row*9,3,3,(row+col+j)%6===0?28:((row+col+j)%7===1?29:17));
-  if(j===5){rect(x+31,y+6,7,12,27);rect(x+32,y+8,1,8,23);rect(x+33,y+7,3,1,23);rect(x+33,y+12,3,1,23);rect(x+33,y+16,3,1,23);}
+  if(j===5){rect(x+29,y+6,11,12,27);line(x+33,y+8,x+31,y+11,23);line(x+31,y+11,x+33,y+14,23);line(x+36,y+8,x+38,y+11,23);line(x+38,y+11,x+36,y+14,23);}
   if(j%3===1){rect(x+6,y-7,15,7,18);rect(x+7,y-6,13,1,3);rect(x+8,y-4,2,3,17);rect(x+13,y-4,2,3,17);rect(x+18,y-4,2,3,17);}
  }
  // Foreground roof tiles, narrow luminous trim and restrained reflections.
@@ -86,16 +127,16 @@ function frame(n){p=new Uint8Array(W*H);const t=n/FPS,u=n/FRAMES,m=motion(t),scr
  const sw=Math.round(22-m.height*.18);rect(PLAYER_X+12-sw/2,GROUND-1,sw,1,1);
  for(let k=-3;k<9;k++){
   const center=238+k*200-scroll,x=center-14;
-  rect(x,162,28,12,2);rect(x,161,28,1,22+((k%4+4)%4));rect(x,162,28,1,3);rect(x+2,164,24,2,3);rect(x+3,169,22,1,1);rect(x+25,164,2,10,1);rect(x+3,165,1,1,24);rect(x+23,165,1,1,24);
+  obstacle(center,((k%4)+4)%4,t);
   // Collect at the jump apex; the symbol disappears into a short pixel burst.
-  const age=(PLAYER_X+12-center)/SPEED,kind=((k%4)+4)%4,y=112+Math.round(Math.sin(t*Math.PI)*1);
+  const age=(PLAYER_X+12-center)/SPEED,kind=((k%4)+4)%4,y=112+Math.round(Math.sin(t*Math.PI)*2);
   if(age<0)token(center,y,kind);else if(age<.36)sparkle(PLAYER_X+12-age*28,112,age,kind);
  }
- dust(m.a,.46);dust(m.a,1.56);drawPlayer(GROUND-Math.round(m.height),t,m);
+ dust(m.a,.46);dust(m.a,1.56);drawPlayer(GROUND-Math.round(m.height),t,m);pickupFlight(t);
  // Light HUD: name and four dots that follow the four collectible types.
  rect(11,10,34,14,1);rect(11,10,34,1,2);text('LUCA',18,15,22);
- rect(343,10,45,14,1);rect(343,10,45,1,2);const active=Math.floor((t+1)/2)%4;
- for(let j=0;j<4;j++){rect(350+j*9,15,5,5,j===active?22+j:3);if(j===active)rect(351+j*9,16,3,3,8);}
+ rect(343,10,45,14,1);rect(343,10,45,1,2);const active=((Math.floor((t-1)/2)%4)+4)%4,hitAge=((t-1)%2+2)%2;
+ for(let j=0;j<4;j++){rect(350+j*9,15,5,5,j===active?22+j:3);if(j===active)rect(351+j*9,16,3,3,hitAge>.5&&hitAge<.7?8:22+j);}
  return p;
 }
 function scale(a){let q=Buffer.alloc(W*S*H*S);for(let y=0;y<H*S;y++)for(let x=0;x<W*S;x++)q[y*W*S+x]=a[Math.floor(y/S)*W+Math.floor(x/S)];return q;}
@@ -107,9 +148,9 @@ function lzw(a){let out=[],acc=0,bits=0,size=7,next=66,dict=new Map();const emit
 function main(){fs.mkdirSync('assets',{recursive:true});
 // Validate the circular scene at its exact boundary before encoding.
 const a0=Buffer.from(frame(0)),a1=Buffer.from(frame(FRAMES));if(!a0.equals(a1))throw Error('Scene loop boundary differs');
-if(process.argv.includes('--preview'))for(const n of [0,23,50,78,100])fs.writeFileSync('assets/polish-check-'+n+'.png',png(scale(frame(n)),W*S,H*S));
-fs.mkdirSync('assets',{recursive:true});let head=Buffer.alloc(13);head.write('GIF89a');head.writeUInt16LE(W*S,6);head.writeUInt16LE(H*S,8);head[10]=0xd5;let parts=[head,Buffer.from(pal.flat()),Buffer.from([0x21,0xff,11]),Buffer.from('NETSCAPE2.0'),Buffer.from([3,1,0,0,0])];let previous;for(let n=0;n<FRAMES;n++){let a=scale(frame(n));if(n===70)fs.writeFileSync('assets/pixel-code-adventure-v6-still.png',png(a,W*S,H*S));let x0=0,y0=0,x1=W*S-1,y1=H*S-1;
+if(process.argv.includes('--preview'))for(const n of [0,23,50,65,78,100,150,250,350])fs.writeFileSync('assets/polish-check-'+n+'.png',png(scale(frame(n)),W*S,H*S));
+fs.mkdirSync('assets',{recursive:true});let head=Buffer.alloc(13);head.write('GIF89a');head.writeUInt16LE(W*S,6);head.writeUInt16LE(H*S,8);head[10]=0xd5;let parts=[head,Buffer.from(pal.flat()),Buffer.from([0x21,0xff,11]),Buffer.from('NETSCAPE2.0'),Buffer.from([3,1,0,0,0])];let previous;for(let n=0;n<FRAMES;n++){let a=scale(frame(n));if(n===70)fs.writeFileSync('assets/pixel-code-adventure-v7-still.png',png(a,W*S,H*S));let x0=0,y0=0,x1=W*S-1,y1=H*S-1;
 if(previous){x0=W*S;y0=H*S;x1=0;y1=0;for(let y=0;y<H*S;y++)for(let x=0;x<W*S;x++)if(a[y*W*S+x]!==previous[y*W*S+x]){x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}if(x0>x1){x0=0;y0=0;x1=0;y1=0;}}
 let ww=x1-x0+1,hh=y1-y0+1,crop=Buffer.alloc(ww*hh);for(let y=0;y<hh;y++)a.copy(crop,y*ww,(y+y0)*W*S+x0,(y+y0)*W*S+x0+ww);
-let desc=Buffer.alloc(10);desc[0]=0x2c;desc.writeUInt16LE(x0,1);desc.writeUInt16LE(y0,3);desc.writeUInt16LE(ww,5);desc.writeUInt16LE(hh,7);parts.push(Buffer.from([0x21,0xf9,4,4,2,0,0,0]),desc,lzw(crop));previous=a;}parts.push(Buffer.from([0x3b]));let gif=Buffer.concat(parts);fs.writeFileSync('assets/pixel-code-adventure-v6.gif',gif);console.log(JSON.stringify({frames:FRAMES,fps:FPS,seconds:FRAMES/FPS,width:W*S,height:H*S,bytes:gif.length}));}
+let desc=Buffer.alloc(10);desc[0]=0x2c;desc.writeUInt16LE(x0,1);desc.writeUInt16LE(y0,3);desc.writeUInt16LE(ww,5);desc.writeUInt16LE(hh,7);parts.push(Buffer.from([0x21,0xf9,4,4,2,0,0,0]),desc,lzw(crop));previous=a;}parts.push(Buffer.from([0x3b]));let gif=Buffer.concat(parts);fs.writeFileSync('assets/pixel-code-adventure-v7.gif',gif);console.log(JSON.stringify({frames:FRAMES,fps:FPS,seconds:FRAMES/FPS,width:W*S,height:H*S,bytes:gif.length}));}
 main();
