@@ -1,7 +1,7 @@
 // Original pixel-art profile loop. No external dependencies. Node.js 18+.
 // Run from the repository root: node scripts/render_adventure.cjs
 const fs=require('node:fs'),zlib=require('node:zlib');
-const W=400,H=208,S=2,FPS=50,FRAMES=400;
+const W=400,H=208,S=2,FPS=50,RUN_FRAMES=400,FRAMES=550;
 const hex=['202c42','283952','344b62','416479','597887','79939a','9cadad','ccd3c4','fff0d4','f6d7b0','ebba98','d99b89','bf7d87','9c6b83','775d7c','535775','496773','37666a','2c555b','21464f','193c49','15323f','528179','6a9683','96af89','bbc696','ded7a7','d7a46d','b77d55','8d604d','694b45','503c3d','eab46b','ffdb88','fff1b6','e48e6b','bb645e','844d56','61404d','432f40','2b2638','171f30','704d3f','95644c','bd8963','e2ad81','f3c89b','eee1c4','cfbea1','a18e7c','77716d','555c64','374553','68b9b0','99dfce','d8f4d9','897050','a48a5d','cfb67c','e6ce93','356c65','478479','79a487','b3c8a0'];
 // Navy, charcoal and muted teal match the supplied pixel portrait.
 Object.entries({0:'0d1117',1:'101b30',2:'23324b',3:'34496a',4:'476080',5:'7892af',6:'a8bed8',7:'c1d1e1',8:'e6edfa',9:'c1d4f4',10:'1a2845',11:'14203b',12:'101a35',13:'091329',14:'061024',15:'172542',16:'182e47',17:'20454e',18:'1a3845',19:'14303b',20:'102833',21:'0d202c',22:'326568',23:'427a7a',24:'649795',25:'8ab5ac',26:'b4d0bf',27:'576d7e',28:'324955',29:'24343f',30:'192b35',31:'111d28',32:'a0c7cb',33:'d4f1e8',34:'e0f5fa',35:'80aaa9',36:'527d82',37:'345964',38:'243746',39:'152b3a',40:'101c2d',41:'0d1117',47:'292a30',48:'202127',49:'15171d',50:'343841',51:'252c38',52:'17202d',53:'609eac',54:'9bd3d8',55:'e0f4f0'}).forEach(([i,h])=>hex[i]=h);
@@ -26,15 +26,15 @@ function arm(x,y,sx,sy,ex,ey,hx,hy,color){
  poly([[x+sx-2,y+sy],[x+sx+2,y+sy],[x+ex+2,y+ey],[x+hx+2,y+hy],[x+hx-2,y+hy],[x+ex-2,y+ey]],color);
  rect(x+hx-1,y+hy-1,3,3,45);
 }
-function character(x,feet,t,jump){
- const phase=Math.floor(t*12)%8,air=(t%2),rise=air<1.01,bob=jump?0:[0,1,2,1,0,1,2,1][phase],y=feet-36-bob;
+function character(x,feet,t,jump,win=false){
+ const phase=Math.floor(t*12)%8,air=(t%2),rise=air<1.01,bob=jump||win?0:[0,1,2,1,0,1,2,1][phase],y=feet-36-bob;
  if(jump){leg(x,y,8,rise?[5,30,3,32]:[7,31,5,34],52);leg(x,y,15,rise?[17,29,20,33]:[17,31,18,35],51);}
  else{leg(x,y,8,RUN[phase][0],52);leg(x,y,15,RUN[phase][1],51);}
  const swing=[-3,-2,0,2,3,2,0,-2][phase];
- arm(x,y,4,20,jump?1:3,24,jump?0:2-swing,jump?24:27,48);
+ if(win)arm(x,y,4,20,0,14,-1,9,48);else arm(x,y,4,20,jump?1:3,24,jump?0:2-swing,jump?24:27,48);
  poly([[x+5,y+17],[x+15,y+16],[x+20,y+22],[x+18,y+29],[x+4,y+29],[x+1,y+23]],49);
  rect(x+5,y+18,12,10,47);rect(x+7,y+20,8,7,48);rect(x+8,y+18,7,2,41);rect(x+7,y+18,2,1,50);rect(x+6,y+27,10,1,50);
- if(jump)arm(x,y,17,20,20,rise?19:22,22,rise?17:24,47);
+ if(win)arm(x,y,17,20,22,14,23,9,47);else if(jump)arm(x,y,17,20,20,rise?19:22,22,rise?17:24,47);
  else arm(x,y,17,20,19,24,19+swing,26,47);
 rect(x+6,y+4,13,12,44);rect(x+8,y+5,12,11,45);rect(x+11,y+7,9,9,46);rect(x+19,y+9,2,3,45);rect(x+8,y+15,9,3,45);
 rect(x+5,y+2,14,5,42);rect(x+7,y,8,3,42);rect(x+12,y+1,6,4,43);rect(x+4,y+4,4,6,42);rect(x+8,y+3,5,3,43);rect(x+15,y+3,5,4,42);rect(x+9,y+1,4,2,44);rect(x+7,y+2,3,1,45);rect(x+17,y+6,3,2,43);
@@ -100,7 +100,7 @@ function drawPlayer(feet,t,m){
   const c=sprite[y*W+x];if(c){const yy=Math.min(GROUND-1,Math.round(feet-(feet-y)*squash));rect(x+lean,yy,1,1,c);}
  }
 }
-function frame(n){p=new Uint8Array(W*H);const t=n/FPS,u=n/FRAMES,m=motion(t),scroll=t*SPEED;
+function scene(n){p=new Uint8Array(W*H);const t=n/FPS,u=n/RUN_FRAMES,m=motion(t),scroll=t*SPEED;
  rect(0,0,W,H,14);rect(0,91,W,42,13);rect(0,133,W,41,12);
  // Deterministic twinkles repeat exactly after eight seconds.
  for(let j=0;j<37;j++){const x=(j*97+29)%W,y=29+(j*31)%71,bright=Math.sin(t*Math.PI/2+j)> .78;rect(x,y,1,1,bright?6:3);if(j%13===0&&bright){rect(x-1,y,3,1,4);rect(x,y-1,1,3,4);}}
@@ -139,6 +139,51 @@ function frame(n){p=new Uint8Array(W*H);const t=n/FPS,u=n/FRAMES,m=motion(t),scr
  for(let j=0;j<4;j++){rect(350+j*9,15,5,5,j===active?22+j:3);if(j===active)rect(351+j*9,16,3,3,hitAge>.5&&hitAge<.7?8:22+j);}
  return p;
 }
+// The same original bitmap alphabet used by the profile's typing header.
+const LEVEL_FONT={
+ A:'01110/10001/10001/11111/10001/10001/10001',B:'11110/10001/10001/11110/10001/10001/11110',C:'01111/10000/10000/10000/10000/10000/01111',D:'11110/10001/10001/10001/10001/10001/11110',E:'11111/10000/10000/11110/10000/10000/11111',F:'11111/10000/10000/11110/10000/10000/10000',G:'01111/10000/10000/10111/10001/10001/01111',H:'10001/10001/10001/11111/10001/10001/10001',I:'11111/00100/00100/00100/00100/00100/11111',J:'00111/00010/00010/00010/10010/10010/01100',K:'10001/10010/10100/11000/10100/10010/10001',L:'10000/10000/10000/10000/10000/10000/11111',M:'10001/11011/10101/10101/10001/10001/10001',N:'10001/11001/10101/10011/10001/10001/10001',O:'01110/10001/10001/10001/10001/10001/01110',P:'11110/10001/10001/11110/10000/10000/10000',Q:'01110/10001/10001/10001/10101/10010/01101',R:'11110/10001/10001/11110/10100/10010/10001',S:'01111/10000/10000/01110/00001/00001/11110',T:'11111/00100/00100/00100/00100/00100/00100',U:'10001/10001/10001/10001/10001/10001/01110',V:'10001/10001/10001/10001/10001/01010/00100',W:'10001/10001/10001/10101/10101/10101/01010',X:'10001/10001/01010/00100/01010/10001/10001',Y:'10001/10001/01010/00100/00100/00100/00100',Z:'11111/00001/00010/00100/01000/10000/11111','-':'00000/00000/00000/11111/00000/00000/00000',' ':'00000/00000/00000/00000/00000/00000/00000'};
+Object.assign(LEVEL_FONT,{'0':'01110/10001/10011/10101/11001/10001/01110','1':'00100/01100/00100/00100/00100/00100/01110','2':'01110/10001/00001/00010/00100/01000/11111','>':'10000/01000/00100/00010/00100/01000/10000','!':'00100/00100/00100/00100/00100/00000/00100'});
+function pixelText(s,y,scale,color){
+ let x=Math.round((W-(s.length*6-1)*scale)/2),index=0;
+ for(const c of s){const ink=Array.isArray(color)?color[index]:color;
+  LEVEL_FONT[c].split('/').forEach((r,j)=>[...r].forEach((v,i)=>{if(v==='1')rect(x+i*scale,y+j*scale,scale,scale,ink);}));x+=6*scale;index++;
+ }
+}
+function levelUp(n){
+ p=new Uint8Array(W*H);const t=(n-RUN_FRAMES)/FPS;
+ rect(0,0,W,H,14);rect(0,155,W,53,13);
+ // Stepped frame, corner accents and restrained confetti use the profile palette.
+ rect(30,23,340,164,1);rect(32,25,336,160,14);
+ rect(37,23,326,1,3);rect(37,186,326,1,3);rect(30,30,1,150,3);rect(369,30,1,150,3);
+ for(const [x,y,c] of [[30,23,22],[357,23,23],[30,175,25],[357,175,24]]){rect(x+3,y,10,2,c);rect(x,y+3,2,9,c);}
+ for(let j=0;j<22;j++){
+  const x=45+(j*47)%310,y=34+((j*31+t*(5+j%4))%138),c=22+j%4;
+  if((x<103||x>299)||(y<51||y>159)){rect(x,y,j%3===0?2:1,2,c);if(j%5===0){rect(x-1,y+1,3,1,c);}}
+ }
+ // Upward chevrons cue the level transition before the large title.
+ for(let j=0;j<2;j++){const yy=34+j*5;poly([[192,yy+5],[200,yy],[208,yy+5],[208,yy+8],[200,yy+3],[192,yy+8]],j?22:24);}
+ const lift=Math.round(Math.exp(-t*8)*4);
+ pixelText('LEVEL UP!',61+lift,3,[22,22,22,22,22,22,23,23,24]);
+ pixelText('01 > 02',94,1,7);
+ for(let j=0;j<4;j++)token(146+j*36,124,j);
+ // A small victory pose keeps the ending recognisably Luca's game.
+ rect(183,183,35,1,1);const hop=Math.round(Math.abs(Math.sin(t*Math.PI*2))*2);
+ character(187,183-hop,0,false,true);
+ return p;
+}
+const DITHER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
+function dissolve(a,b,q){
+ const out=new Uint8Array(a.length);for(let y=0;y<H;y++)for(let x=0;x<W;x++){const threshold=(DITHER[(Math.floor(y/2)%4)*4+Math.floor(x/2)%4]+.5)/16;out[y*W+x]=q>=threshold?b[y*W+x]:a[y*W+x];}return out;
+}
+function frame(n){
+ if(n<RUN_FRAMES)return scene(n);
+ if(n>=FRAMES)return scene(0);
+ const end=levelUp(n);
+ if(n<RUN_FRAMES+12)return dissolve(scene(RUN_FRAMES-1),end,(n-RUN_FRAMES)/11);
+ if(n>=FRAMES-25)return dissolve(end,scene(0),(n-(FRAMES-25))/24);
+ return end;
+}
+
 function scale(a){let q=Buffer.alloc(W*S*H*S);for(let y=0;y<H*S;y++)for(let x=0;x<W*S;x++)q[y*W*S+x]=a[Math.floor(y/S)*W+Math.floor(x/S)];return q;}
 function crc(buf){let c=-1;for(let b of buf){c^=b;for(let i=0;i<8;i++)c=(c>>>1)^((c&1)?0xedb88320:0);}return(c^-1)>>>0;}
 function chunk(name,data){let b=Buffer.alloc(data.length+12);b.writeUInt32BE(data.length);b.write(name,4);data.copy(b,8);b.writeUInt32BE(crc(b.subarray(4,-4)),b.length-4);return b;}
@@ -147,10 +192,10 @@ function png(a,w,h){let raw=Buffer.alloc((w+1)*h);for(let y=0;y<h;y++){raw[y*(w+
 function lzw(a){let out=[],acc=0,bits=0,size=7,next=66,dict=new Map();const emit=v=>{acc|=v<<bits;bits+=size;while(bits>=8){out.push(acc&255);acc>>>=8;bits-=8;}};emit(64);let cur=a[0];for(let i=1;i<a.length;i++){let c=a[i],key=cur*64+c,v=dict.get(key);if(v!==undefined)cur=v;else{emit(cur);if(next<4096){dict.set(key,next++);if(next>(1<<size)&&size<12)size++;}else{emit(64);dict.clear();size=7;next=66;}cur=c;}}emit(cur);emit(65);if(bits)out.push(acc&255);let b=Buffer.from(out),blocks=[];for(let i=0;i<b.length;i+=255)blocks.push(Buffer.from([Math.min(255,b.length-i)]),b.subarray(i,i+255));return Buffer.concat([Buffer.from([6]),...blocks,Buffer.from([0])]);}
 function main(){fs.mkdirSync('assets',{recursive:true});
 // Validate the circular scene at its exact boundary before encoding.
-const a0=Buffer.from(frame(0)),a1=Buffer.from(frame(FRAMES));if(!a0.equals(a1))throw Error('Scene loop boundary differs');
-if(process.argv.includes('--preview'))for(const n of [0,23,50,65,78,100,150,250,350])fs.writeFileSync('assets/polish-check-'+n+'.png',png(scale(frame(n)),W*S,H*S));
-fs.mkdirSync('assets',{recursive:true});let head=Buffer.alloc(13);head.write('GIF89a');head.writeUInt16LE(W*S,6);head.writeUInt16LE(H*S,8);head[10]=0xd5;let parts=[head,Buffer.from(pal.flat()),Buffer.from([0x21,0xff,11]),Buffer.from('NETSCAPE2.0'),Buffer.from([3,1,0,0,0])];let previous;for(let n=0;n<FRAMES;n++){let a=scale(frame(n));if(n===70)fs.writeFileSync('assets/pixel-code-adventure-v7-still.png',png(a,W*S,H*S));let x0=0,y0=0,x1=W*S-1,y1=H*S-1;
+const a0=Buffer.from(frame(0)),a1=Buffer.from(frame(FRAMES-1));if(!a0.equals(a1))throw Error('Scene loop boundary differs');
+if(process.argv.includes('--preview'))for(const n of [0,350,400,412,450,500,549])fs.writeFileSync('assets/polish-check-'+n+'.png',png(scale(frame(n)),W*S,H*S));
+fs.mkdirSync('assets',{recursive:true});let head=Buffer.alloc(13);head.write('GIF89a');head.writeUInt16LE(W*S,6);head.writeUInt16LE(H*S,8);head[10]=0xd5;let parts=[head,Buffer.from(pal.flat()),Buffer.from([0x21,0xff,11]),Buffer.from('NETSCAPE2.0'),Buffer.from([3,1,0,0,0])];let previous;for(let n=0;n<FRAMES;n++){let a=scale(frame(n));if(n===70)fs.writeFileSync('assets/pixel-code-adventure-v8-still.png',png(a,W*S,H*S));let x0=0,y0=0,x1=W*S-1,y1=H*S-1;
 if(previous){x0=W*S;y0=H*S;x1=0;y1=0;for(let y=0;y<H*S;y++)for(let x=0;x<W*S;x++)if(a[y*W*S+x]!==previous[y*W*S+x]){x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}if(x0>x1){x0=0;y0=0;x1=0;y1=0;}}
 let ww=x1-x0+1,hh=y1-y0+1,crop=Buffer.alloc(ww*hh);for(let y=0;y<hh;y++)a.copy(crop,y*ww,(y+y0)*W*S+x0,(y+y0)*W*S+x0+ww);
-let desc=Buffer.alloc(10);desc[0]=0x2c;desc.writeUInt16LE(x0,1);desc.writeUInt16LE(y0,3);desc.writeUInt16LE(ww,5);desc.writeUInt16LE(hh,7);parts.push(Buffer.from([0x21,0xf9,4,4,2,0,0,0]),desc,lzw(crop));previous=a;}parts.push(Buffer.from([0x3b]));let gif=Buffer.concat(parts);fs.writeFileSync('assets/pixel-code-adventure-v7.gif',gif);console.log(JSON.stringify({frames:FRAMES,fps:FPS,seconds:FRAMES/FPS,width:W*S,height:H*S,bytes:gif.length}));}
+let desc=Buffer.alloc(10);desc[0]=0x2c;desc.writeUInt16LE(x0,1);desc.writeUInt16LE(y0,3);desc.writeUInt16LE(ww,5);desc.writeUInt16LE(hh,7);parts.push(Buffer.from([0x21,0xf9,4,4,2,0,0,0]),desc,lzw(crop));previous=a;}parts.push(Buffer.from([0x3b]));let gif=Buffer.concat(parts);fs.writeFileSync('assets/pixel-code-adventure-v8.gif',gif);console.log(JSON.stringify({frames:FRAMES,fps:FPS,seconds:FRAMES/FPS,gameSeconds:RUN_FRAMES/FPS,levelUpSeconds:(FRAMES-RUN_FRAMES)/FPS,width:W*S,height:H*S,bytes:gif.length}));}
 main();
