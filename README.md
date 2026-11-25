@@ -8,7 +8,7 @@ Business Information Systems student at STADIO
 
 <picture>
   <source media="(prefers-reduced-motion: reduce)" srcset="assets/level-still.png">
-  <img src="assets/level.gif" width="900" alt="A little pixel-art runner in a beige hoodie, jumping through a moonlit level.">
+  <img src="assets/level.gif" width="900" alt="An original N64-inspired 3D platformer, with a character based on Luca exploring a low-poly island.">
 </picture>
 
 </div>
