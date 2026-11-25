@@ -2,14 +2,14 @@
 // From the repository root: node scripts/render_intro.cjs
 const fs=require('node:fs'),zlib=require('node:zlib');
 const W=400,H=66,S=2,FPS=10,FRAMES=120;
-const colors=['0d1117','e6edfa','a8bed8','9bd3d8',...Array(60).fill('0d1117')];
+const colors=['0d1117','73d9c7','b5c5df','ed9eac','b1a3ff','f3c77d',...Array(58).fill('0d1117')];
 const pal=colors.flatMap(h=>[0,2,4].map(i=>parseInt(h.slice(i,i+2),16)));
 const glyphs={
  A:'01110/10001/10001/11111/10001/10001/10001',B:'11110/10001/10001/11110/10001/10001/11110',C:'01111/10000/10000/10000/10000/10000/01111',D:'11110/10001/10001/10001/10001/10001/11110',E:'11111/10000/10000/11110/10000/10000/11111',F:'11111/10000/10000/11110/10000/10000/10000',G:'01111/10000/10000/10111/10001/10001/01111',H:'10001/10001/10001/11111/10001/10001/10001',I:'11111/00100/00100/00100/00100/00100/11111',J:'00111/00010/00010/00010/10010/10010/01100',K:'10001/10010/10100/11000/10100/10010/10001',L:'10000/10000/10000/10000/10000/10000/11111',M:'10001/11011/10101/10101/10001/10001/10001',N:'10001/11001/10101/10011/10001/10001/10001',O:'01110/10001/10001/10001/10001/10001/01110',P:'11110/10001/10001/11110/10000/10000/10000',Q:'01110/10001/10001/10001/10101/10010/01101',R:'11110/10001/10001/11110/10100/10010/10001',S:'01111/10000/10000/01110/00001/00001/11110',T:'11111/00100/00100/00100/00100/00100/00100',U:'10001/10001/10001/10001/10001/10001/01110',V:'10001/10001/10001/10001/10001/01010/00100',W:'10001/10001/10001/10101/10101/10101/01010',X:'10001/10001/01010/00100/01010/10001/10001',Y:'10001/10001/01010/00100/00100/00100/00100',Z:'11111/00001/00010/00100/01000/10000/11111','-':'00000/00000/00000/11111/00000/00000/00000',' ':'00000/00000/00000/00000/00000/00000/00000'};
 const title='LUCA BRANDAO',subtitle='FINAL-YEAR BUSINESS INFORMATION SYSTEMS STUDENT AT STADIO';
 for(const c of title+subtitle)if(!glyphs[c])throw Error('Missing glyph '+c);
 function rect(p,x,y,w,h,c){for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++)if(i>=0&&i<W&&j>=0&&j<H)p[j*W+i]=c;}
-function text(p,s,x,y,scale,color){for(const c of s){glyphs[c].split('/').forEach((r,j)=>[...r].forEach((v,i)=>{if(v==='1')rect(p,x+i*scale,y+j*scale,scale,scale,color);}));x+=6*scale;}}
+function text(p,s,x,y,scale,color){let index=0;for(const c of s){const ink=Array.isArray(color)?color[index]:color;glyphs[c].split('/').forEach((r,j)=>[...r].forEach((v,i)=>{if(v==='1')rect(p,x+i*scale,y+j*scale,scale,scale,ink);}));x+=6*scale;index++;}}
 function frame(n,still=false){
  const p=Buffer.alloc(W*H),t=n/FPS;
  let a=still?title.length:Math.max(0,Math.min(title.length,Math.floor((t-.3)*10)));
@@ -17,7 +17,7 @@ function frame(n,still=false){
  // A long readable hold; quick backspace at the end makes a clean loop.
  if(!still&&t>10.2){b=Math.max(0,subtitle.length-Math.floor((t-10.2)*50));if(t>11.35)a=Math.max(0,title.length-Math.floor((t-11.35)*25));}
  const x1=Math.floor((W-(title.length*18-3))/2),x2=Math.floor((W-(subtitle.length*6-1))/2);
- text(p,title.slice(0,a),x1,10,3,1);text(p,subtitle.slice(0,b),x2,43,1,2);
+ text(p,title.slice(0,a),x1,10,3,Array.from(title,(_,i)=>i<5?1:4));text(p,subtitle.slice(0,b),x2,43,1,Array.from(subtitle,(_,i)=>i>=subtitle.length-6?5:2));
  if(!still&&Math.floor(t*2)%2===0){if(t<1.8||t>11.35)rect(p,x1+a*18,10,2,21,3);else rect(p,x2+b*6,43,1,7,3);}
  return p;
 }
@@ -37,7 +37,7 @@ function main(){
   parts.push(Buffer.from([0x21,0xf9,4,4,10,0,0,0]),desc,lzw(crop));previous=a;
  }
  parts.push(Buffer.from([0x3b]));const gif=Buffer.concat(parts);
- fs.writeFileSync('assets/pixel-intro-v1.gif',gif);fs.writeFileSync('assets/pixel-intro-v1-still.png',png(scale(frame(60,true))));
+ fs.writeFileSync('assets/pixel-intro-v2.gif',gif);fs.writeFileSync('assets/pixel-intro-v2-still.png',png(scale(frame(60,true))));
  console.log(JSON.stringify({width:W*S,height:H*S,frames:FRAMES,seconds:FRAMES/FPS,bytes:gif.length,title,subtitle}));
 }
 main();
