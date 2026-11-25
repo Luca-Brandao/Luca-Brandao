@@ -28,7 +28,7 @@ function arm(x,y,sx,sy,ex,ey,hx,hy,color){
  poly([[x+sx-2,y+sy],[x+sx+2,y+sy],[x+ex+2,y+ey],[x+hx+2,y+hy],[x+hx-2,y+hy],[x+ex-2,y+ey]],color);
  rect(x+hx-1,y+hy-1,3,3,45);
 }
-function character(x,feet,t,jump,win=false,idle=false){
+function character(x,feet,t,jump,win=false,idle=false,weapon=null){
  const phase=idle?0:Math.floor(t*12)%8,air=(t%2),rise=air<1.01,bob=jump||win||idle?0:[0,1,2,1,0,1,2,1][phase],y=feet-36-bob;
  if(jump){leg(x,y,8,rise?[5,30,3,32]:[7,31,5,34],52);leg(x,y,15,rise?[17,29,20,33]:[17,31,18,35],51);}
  else if(idle){leg(x,y,8,[9,31,8,35],52);leg(x,y,15,[14,31,15,35],51);}
@@ -37,7 +37,8 @@ function character(x,feet,t,jump,win=false,idle=false){
  if(win)arm(x,y,4,20,0,14,-1,9,48);else arm(x,y,4,20,jump?1:3,24,jump?0:2-swing,jump?24:27,48);
  poly([[x+5,y+17],[x+15,y+16],[x+20,y+22],[x+18,y+29],[x+4,y+29],[x+1,y+23]],49);
  rect(x+5,y+18,12,10,47);rect(x+7,y+20,8,7,48);rect(x+8,y+18,7,2,41);rect(x+7,y+18,2,1,50);rect(x+6,y+27,10,1,50);
- if(win)arm(x,y,17,20,22,14,23,9,47);else if(jump)arm(x,y,17,20,20,rise?19:22,22,rise?17:24,47);
+ if(weapon)arm(x,y,17,20,21,24,25-weapon.recoil,21+Math.round(weapon.aim/2),47);
+ else if(win)arm(x,y,17,20,22,14,23,9,47);else if(jump)arm(x,y,17,20,20,rise?19:22,22,rise?17:24,47);
  else arm(x,y,17,20,19,24,19+swing,26,47);
 rect(x+6,y+4,13,12,44);rect(x+8,y+5,12,11,45);rect(x+11,y+7,9,9,46);rect(x+19,y+9,2,3,45);rect(x+8,y+15,9,3,45);
 rect(x+5,y+2,14,5,42);rect(x+7,y,8,3,42);rect(x+12,y+1,6,4,43);rect(x+4,y+4,4,6,42);rect(x+8,y+3,5,3,43);rect(x+15,y+3,5,4,42);rect(x+9,y+1,4,2,44);rect(x+7,y+2,3,1,45);rect(x+17,y+6,3,2,43);
@@ -55,6 +56,12 @@ const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
 const ease=q=>{q=clamp(q);return q*q*(3-2*q);};
 function worldScroll(t){if(t<=12)return t*SPEED;const q=Math.min(2,t-12);return (12+q-q*q/4)*SPEED;}
 function playerX(t){return PLAYER_X+Math.round(208*ease((t-18.65)/1.05));}
+function weaponPose(t){
+ const feet=GROUND-Math.round(motion(t).height),x=playerX(t),target=bossPosition(t);
+ const aim=t>=12?Math.round(clamp((target.y-(feet-15))*8/Math.max(50,target.x-x-30),-4,4)):0;
+ const shot=BOSS_HITS.find(hit=>t>=hit-.7&&t<hit-.49),age=shot===undefined?1:t-(shot-.7),recoil=Math.round(2*Math.exp(-age*19));
+ return {feet,x,aim,recoil,muzzleX:x+33-recoil,muzzleY:feet-15+aim,firing:age<.08};
+}
 function motion(t){
  const boss=t>=12.95&&t<18.55,a=(((t-(boss?.95:0))%PERIOD)+PERIOD)%PERIOD,start=.46,end=1.56,s=(a-start)/(end-start);
  let height=s>0&&s<1?44*4*s*(1-s):0;
@@ -84,10 +91,11 @@ function dust(t,event,xx=PLAYER_X){
  for(let j=0;j<4;j++){const q=age/.22,x=xx+8-j*4-q*(10+j*2),y=GROUND-2-Math.sin(q*Math.PI)*(2+j%2);rect(x,y,q<.45?3:2,1,j%2?4:3);}
 }
 function crawler(x,t,color,age){
- rect(x-14,173,28,1,1);
+ if(age<.18)rect(x-14,173,28,1,1);
  if(age>=0){
   if(age<.12){rect(x-12,169,25,4,3);rect(x-10,168,21,2,color);rect(x-7,170,4,1,25);}
-  if(age<.42){const q=age/.42;for(let j=0;j<8;j++){const angle=j*Math.PI/4;rect(x+Math.cos(angle)*q*25,154+Math.sin(angle)*q*17-q*8,2,2,j%2?color:8);}}
+  if(age<.42){const q=age/.42;for(let j=0;j<8;j++){const angle=j*Math.PI/4;rect(x+Math.cos(angle)*q*25,154+Math.sin(angle)*q*17-q*8,q<.55?2:1,q<.55?2:1,j%2?color:8);}}
+  if(age<.22){const r=4+age*55;rect(x-r,171,4,1,color);rect(x+r-3,171,4,1,color);}
   return;
  }
  const step=Math.floor(t*14)%4;
@@ -114,11 +122,12 @@ function drone(x,t,enemy){
 }
 function enemies(t){
  for(const enemy of ENCOUNTERS){
-  const age=t-enemy.at,x=Math.round(PLAYER_X+12-age*enemy.speed);
+  const age=t-enemy.at,x=Math.round(PLAYER_X+12-(enemy.type==='crawler'&&age>=0?worldScroll(t)-worldScroll(enemy.at):age*enemy.speed));
+  if(enemy.type==='crawler'&&age>.65)continue;
   if(x<-40||x>W+40)continue;
   if(enemy.type==='crawler')crawler(x,t,enemy.color,age);else drone(x,t,enemy);
   // A short alert precedes an encounter; a score rises from each defeated bot.
-  if(age>-.7&&age<-.3&&Math.floor(t*10)%2===0){rect(x,132,2,5,25);rect(x,139,2,2,25);}
+  if(age>-.7&&age<-.3){const yy=133-Math.round(ease((age+.7)/.4)*2);rect(x,yy,2,5,25);rect(x,yy+7,2,2,25);}
   if(enemy.type==='crawler'&&age>=0&&age<.65){text('+200',x-36,139-Math.round(age*19),age<.15?8:24);}
  }
 }
@@ -132,14 +141,16 @@ function pickupFlight(t){
 }
 function drawPlayer(feet,t,m){
  if(t>=19.72)return;
- const xx=playerX(t),scene=p;p=new Uint8Array(W*H);character(xx,feet,m.boss?t-.95:t,m.jump,false,t>=12&&t<18.65&&!m.jump);const sprite=p;p=scene;
- const landAt=t<12&&Math.floor(t/2)%2===0?1.9:1.56,anticipation=t<18.55&&m.a>=.36&&m.a<.46,landing=t<18.55&&m.a>=landAt&&m.a<landAt+.12,squash=anticipation?.9:(landing?.93:1),lean=m.jump?(m.a<1.01?1:0):0;
+ const xx=playerX(t),weapon=t>=9&&t<18.55?weaponPose(t):null,scene=p;p=new Uint8Array(W*H);character(xx,feet,m.boss?t-.95:t,m.jump,false,t>=12&&t<18.65&&!m.jump,weapon);const sprite=p;p=scene;
+ const landAt=t<12&&Math.floor(t/2)%2===0?1.9:1.56,anticipation=t<18.55&&m.a>=.36&&m.a<.46,landing=t<18.55&&m.a>=landAt&&m.a<landAt+.12,squash=anticipation?.9:(landing?(m.a-landAt<.06?.88:.96):1),lean=m.jump?(m.a<1.01?1:0):0;
  for(let y=Math.max(0,Math.floor(feet)-39);y<=Math.min(H-1,Math.ceil(feet)+2);y++)for(let x=xx-9;x<xx+34;x++){
-  const c=sprite[y*W+x];if(c){if(t>19.45&&((x+y)%4)/4<clamp((t-19.45)/.27))continue;const yy=Math.min(GROUND-1,Math.round(feet-(feet-y)*squash));rect(x+lean,yy,1,1,c);}
+  const c=sprite[y*W+x];if(c){if(t>19.45&&x>330+Math.round((1-clamp((t-19.45)/.27))*30))continue;const yy=Math.min(GROUND-1,Math.round(feet-(feet-y)*squash));rect(x+lean,yy,1,1,c);}
  }
- // The acquired blaster gets a small readable muzzle flash on each shot.
- if(t>=9&&t<18.55){rect(xx+19,feet-16,8,4,3);rect(xx+24,feet-16,5,2,22);
-  if(BOSS_HITS.some(hit=>t>=hit-.7&&t<hit-.58)){rect(xx+29,feet-18,3,7,22);rect(xx+30,feet-16,5,3,8);}
+ // The hand, barrel, recoil and projectile share one muzzle position.
+ if(weapon){const {muzzleX:mx,muzzleY:my,recoil,aim}=weapon;
+  poly([[xx+23-recoil,feet-17],[mx,my-2],[mx,my+2],[xx+23-recoil,feet-13]],41);
+  line(xx+24-recoil,feet-16,mx-1,my-1,5);line(xx+24-recoil,feet-15,mx,my,22);rect(xx+24-recoil,feet-13,2,3,47);
+  if(weapon.firing){rect(mx+1,my-2,2,5,22);rect(mx+2,my-1,4,3,8);}
  }
 }
 function powerUp(t){
@@ -147,7 +158,10 @@ function powerUp(t){
  if(t>=9&&t<9.5){if(t<9.36)sparkle(PLAYER_X+12,112,t-9,0);pixelText('POWER UP',47,1,22);}
  if(t>=9&&t<12){const feet=GROUND-Math.round(motion(t).height);for(let j=3;j>0;j--)rect(PLAYER_X-j*7,feet-15+j,4,1,j===1?22:31);}
 }
-function bossPosition(t){return {x:Math.round(420-120*ease((t-12.35)/.9)),y:128+Math.round(Math.sin((t-12.35)*2.7)*3)};}
+function bossPosition(t){
+ const hit=BOSS_HITS.find(at=>t>=at&&t<at+.34),age=hit===undefined?1:t-hit;
+ return {x:Math.round(420-120*ease((t-12.35)/.9)+(hit===undefined?0:5*(1-ease(age/.34)))),y:128+Math.round(Math.sin((t-12.35)*2.7)*3)};
+}
 function sentinel(t){
  if(t<12.35||t>=18.65)return;
  const {x,y}=bossPosition(t),dead=t>=BOSS_HITS[2],damage=BOSS_HITS.filter(hit=>t>=hit).length;
@@ -166,7 +180,7 @@ function sentinel(t){
  }
  // Three telegraphed low shots are cleared by three deliberate jumps.
  for(const shot of BOSS_SHOTS){const age=t-shot;if(age>=0&&age<1.4){const bx=Math.round(278-age*200);rect(bx+3,158,14,2,29);rect(bx,156,7,5,25);rect(bx,157,3,3,8);}}
- for(const hit of BOSS_HITS){const fired=hit-.7,age=t-fired;if(age>=0&&age<.7){const q=age/.7,startY=GROUND-Math.round(motion(fired).height)-15,tx=bossPosition(hit),xx=Math.round(155+(tx.x-155)*q),yy=Math.round(startY+(tx.y-startY)*q);
+ for(const hit of BOSS_HITS){const fired=hit-.7,age=t-fired;if(age>=0&&age<.7){const q=age/.7,gun=weaponPose(fired),tx=bossPosition(hit),xx=Math.round(gun.muzzleX+(tx.x-gun.muzzleX)*q),yy=Math.round(gun.muzzleY+(tx.y-gun.muzzleY)*q);
    rect(xx-10,yy,8,1,31);rect(xx-4,yy-1,6,3,22);rect(xx,yy,3,1,8);}
   const impact=t-hit;if(impact>=0&&impact<.3){const q=impact/.3;for(let j=0;j<8;j++){const a=j*Math.PI/4;rect(x+Math.cos(a)*(4+q*20),y+Math.sin(a)*(4+q*16),2,2,j%2?22:8);}}
  }
@@ -174,7 +188,7 @@ function sentinel(t){
   if(q<.55){const r=6+q*70;for(let j=0;j<32;j++){const a=j*Math.PI/16;rect(x+Math.cos(a)*r,y+Math.sin(a)*r*.75,1,1,j%2?22:23);}}
   if(q<.7)pixelText('+1000',73-Math.round(q*12),1,24);
  }
- if(t>=12.8&&t<17.9){rect(160,11,80,12,1);text('SENTINEL',164,14,7);for(let j=0;j<3;j++)rect(205+j*10,15,7,3,j<3-damage?25:3);}
+ if(t>=12.8&&t<17.9){rect(160,11,80,12,1);text('SENTINEL',164,14,7);for(let j=0;j<3;j++){const justLost=j===3-damage&&BOSS_HITS.some(hit=>t>=hit&&t<hit+.28);rect(205+j*10,15,7,3,j<3-damage?25:(justLost?24:3));}}
 }
 function exitPortal(t){
  if(t<18.35)return;
@@ -221,7 +235,7 @@ function scene(n){p=new Uint8Array(W*H);const t=n/FPS,scroll=worldScroll(t),u=sc
  if(t>=18.65&&t<19.72)dust(t%PERIOD,0,playerX(t));
  drawPlayer(GROUND-Math.round(m.height),t,m);pickupFlight(t);
  if(t>=19.72&&t<20)sparkle(346,143,t-19.72,0);
- if(t<1.1)pixelText('ROOFTOP RUN',39,1,t<.16?3:7);
+ if(t<1.1){const ink=t<.12||t>.98?3:(t<.22||t>.9?5:7);rect(147,32,106,18,1);rect(151,32,98,1,3);pixelText('ROOFTOP RUN',38,1,ink);}
  if(t>=12.08&&t<12.95)pixelText('SENTINEL APPROACHING',43,1,25);
  // Light HUD: name, score and four collected symbols.
  rect(11,10,34,14,1);rect(11,10,34,1,2);text('LUCA',18,15,22);
@@ -259,16 +273,19 @@ function levelUp(n){
  character(187,170-hop,0,false,true);
  return p;
 }
-const DITHER=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5];
-function dissolve(a,b,q){
- const out=new Uint8Array(a.length);for(let y=0;y<H;y++)for(let x=0;x<W;x++){const threshold=(DITHER[(Math.floor(y/2)%4)*4+Math.floor(x/2)%4]+.5)/16;out[y*W+x]=q>=threshold?b[y*W+x]:a[y*W+x];}return out;
+function iris(a,b,q,cx,cy){
+ if(q<=0)return a;if(q>=1)return b;
+ const radius=ease(q)*Math.max(Math.hypot(cx,cy),Math.hypot(W-cx,H-cy),Math.hypot(cx,H-cy),Math.hypot(W-cx,cy))+2;
+ const out=new Uint8Array(a.length);
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){const d=Math.hypot(x-cx,y-cy),i=y*W+x;out[i]=d<radius?b[i]:a[i];if(Math.abs(d-radius)<.7)out[i]=3;}
+ return out;
 }
 function frame(n){
  if(n<RUN_FRAMES)return scene(n);
  if(n>=FRAMES)return scene(0);
  const end=levelUp(n);
- if(n<RUN_FRAMES+12)return dissolve(scene(RUN_FRAMES-1),end,(n-RUN_FRAMES)/11);
- if(n>=FRAMES-25)return dissolve(end,scene(0),(n-(FRAMES-25))/24);
+ if(n<RUN_FRAMES+20)return iris(scene(RUN_FRAMES-1),end,(n-RUN_FRAMES)/19,346,140);
+ if(n>=FRAMES-25)return iris(end,scene(0),(n-(FRAMES-25))/24,200,104);
  return end;
 }
 
@@ -278,12 +295,39 @@ function chunk(name,data){let b=Buffer.alloc(data.length+12);b.writeUInt32BE(dat
 function png(a,w,h){let raw=Buffer.alloc((w+1)*h);for(let y=0;y<h;y++){raw[y*(w+1)]=0;Buffer.from(a.subarray(y*w,(y+1)*w)).copy(raw,y*(w+1)+1);}let ih=Buffer.alloc(13);ih.writeUInt32BE(w);ih.writeUInt32BE(h,4);ih[8]=8;ih[9]=3;return Buffer.concat([Buffer.from([137,80,78,71,13,10,26,10]),chunk('IHDR',ih),chunk('PLTE',Buffer.from(pal.flat())),chunk('IDAT',zlib.deflateSync(raw)),chunk('IEND',Buffer.alloc(0))]);}
 // GIF89a, a fixed global palette, and GIF LZW. No lossy colour quantisation.
 function lzw(a){let out=[],acc=0,bits=0,size=7,next=66,dict=new Map();const emit=v=>{acc|=v<<bits;bits+=size;while(bits>=8){out.push(acc&255);acc>>>=8;bits-=8;}};emit(64);let cur=a[0];for(let i=1;i<a.length;i++){let c=a[i],key=cur*64+c,v=dict.get(key);if(v!==undefined)cur=v;else{emit(cur);if(next<4096){dict.set(key,next++);if(next>(1<<size)&&size<12)size++;}else{emit(64);dict.clear();size=7;next=66;}cur=c;}}emit(cur);emit(65);if(bits)out.push(acc&255);let b=Buffer.from(out),blocks=[];for(let i=0;i<b.length;i+=255)blocks.push(Buffer.from([Math.min(255,b.length-i)]),b.subarray(i,i+255));return Buffer.concat([Buffer.from([6]),...blocks,Buffer.from([0])]);}
-function main(){fs.mkdirSync('assets',{recursive:true});
-// Validate the circular scene at its exact boundary before encoding.
-const a0=Buffer.from(frame(0)),a1=Buffer.from(frame(FRAMES-1));if(!a0.equals(a1))throw Error('Scene loop boundary differs');
-if(process.argv.includes('--preview'))for(const n of [0,62,76,137,450,600,640,675,700,710,745,795,845,880,900,940,970,985,1000,1050,1149])fs.writeFileSync('assets/polish-check-'+n+'.png',png(scale(frame(n)),W*S,H*S));
-fs.mkdirSync('assets',{recursive:true});let head=Buffer.alloc(13);head.write('GIF89a');head.writeUInt16LE(W*S,6);head.writeUInt16LE(H*S,8);head[10]=0xd5;let parts=[head,Buffer.from(pal.flat()),Buffer.from([0x21,0xff,11]),Buffer.from('NETSCAPE2.0'),Buffer.from([3,1,0,0,0])];let previous;for(let n=0;n<FRAMES;n++){let a=scale(frame(n));if(n===70)fs.writeFileSync('assets/pixel-code-adventure-v11-still.png',png(a,W*S,H*S));let x0=0,y0=0,x1=W*S-1,y1=H*S-1;
-if(previous){x0=W*S;y0=H*S;x1=0;y1=0;for(let y=0;y<H*S;y++)for(let x=0;x<W*S;x++)if(a[y*W*S+x]!==previous[y*W*S+x]){x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}if(x0>x1){x0=0;y0=0;x1=0;y1=0;}}
-let ww=x1-x0+1,hh=y1-y0+1,crop=Buffer.alloc(ww*hh);for(let y=0;y<hh;y++)a.copy(crop,y*ww,(y+y0)*W*S+x0,(y+y0)*W*S+x0+ww);
-let desc=Buffer.alloc(10);desc[0]=0x2c;desc.writeUInt16LE(x0,1);desc.writeUInt16LE(y0,3);desc.writeUInt16LE(ww,5);desc.writeUInt16LE(hh,7);parts.push(Buffer.from([0x21,0xf9,4,4,2,0,0,0]),desc,lzw(crop));previous=a;}parts.push(Buffer.from([0x3b]));let gif=Buffer.concat(parts);fs.writeFileSync('assets/pixel-code-adventure-v11.gif',gif);console.log(JSON.stringify({frames:FRAMES,fps:FPS,seconds:FRAMES/FPS,gameSeconds:RUN_FRAMES/FPS,levelUpSeconds:(FRAMES-RUN_FRAMES)/FPS,width:W*S,height:H*S,bytes:gif.length}));}
+function main(){
+ fs.mkdirSync('assets',{recursive:true});
+ const a0=Buffer.from(frame(0)),a1=Buffer.from(frame(FRAMES-1));
+ if(!a0.equals(a1))throw Error('Scene loop boundary differs');
+ if(process.argv.includes('--preview'))for(const n of [0,62,70,76,137,450,640,675,700,710,715,795,880,940,970,980,985,1000,1005,1010,1019,1050,1130,1140,1149]){
+  fs.writeFileSync('assets/polish-check-'+n+'.png',png(scale(frame(n)),W*S,H*S));
+ }
+ const width=W*S,height=H*S,transparent=63,head=Buffer.alloc(13);
+ head.write('GIF89a');head.writeUInt16LE(width,6);head.writeUInt16LE(height,8);head[10]=0xd5;
+ const parts=[head,Buffer.from(pal.flat()),Buffer.from([0x21,0xff,11]),Buffer.from('NETSCAPE2.0'),Buffer.from([3,1,0,0,0])];
+ let previous;
+ for(let n=0;n<FRAMES;n++){
+  const a=scale(frame(n));if(a.includes(transparent))throw Error('Reserved transparent palette index used');
+  if(n===70)fs.writeFileSync('assets/pixel-code-adventure-v12-still.png',png(a,width,height));
+  let x0=0,y0=0,x1=width-1,y1=height-1;
+  if(previous){
+   x0=width;y0=height;x1=y1=0;
+   for(let y=0;y<height;y++)for(let x=0;x<width;x++)if(a[y*width+x]!==previous[y*width+x]){
+    x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);
+   }
+   if(x0>x1)x0=y0=x1=y1=0;
+  }
+  const ww=x1-x0+1,hh=y1-y0+1,crop=Buffer.alloc(ww*hh);
+  // Retain every changed pixel exactly; unchanged pixels do not need re-encoding.
+  for(let y=0;y<hh;y++)for(let x=0;x<ww;x++){
+   const at=(y+y0)*width+x+x0;
+   crop[y*ww+x]=previous&&a[at]===previous[at]?transparent:a[at];
+  }
+  const desc=Buffer.alloc(10);desc[0]=0x2c;desc.writeUInt16LE(x0,1);desc.writeUInt16LE(y0,3);desc.writeUInt16LE(ww,5);desc.writeUInt16LE(hh,7);
+  parts.push(Buffer.from([0x21,0xf9,4,previous?5:4,2,0,transparent,0]),desc,lzw(crop));previous=a;
+ }
+ parts.push(Buffer.from([0x3b]));const gif=Buffer.concat(parts);
+ fs.writeFileSync('assets/pixel-code-adventure-v12.gif',gif);
+ console.log(JSON.stringify({frames:FRAMES,fps:FPS,seconds:FRAMES/FPS,width,height,bytes:gif.length,losslessDeltaFrames:true}));
+}
 main();
