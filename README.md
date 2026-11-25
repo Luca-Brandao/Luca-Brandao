@@ -4,20 +4,18 @@
 
 Final-year Business Information Systems student at STADIO
 
-<a href="mailto:lucabrandao366@gmail.com"><img src="assets/email.svg" width="20" height="20" alt="Email icon"> Email</a> &nbsp; / &nbsp; <a href="https://www.linkedin.com/in/luca-brandao-a90961352/"><img src="assets/linkedin.svg" width="20" height="20" alt="LinkedIn icon"> LinkedIn</a>
-
 <picture>
-  <source media="(prefers-reduced-motion: reduce)" srcset="assets/systems-workshop-v3-still.png">
-  <img src="assets/systems-workshop-v3.gif" width="800" alt="Luca in a navy pixel-art workshop with inventory shelves, order processing, a database and financial reports.">
+  <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-code-adventure-v4-still.png">
+  <img src="assets/pixel-code-adventure-v4.gif" width="800" alt="Luca in a pixel-art coding adventure, collecting web, code, book and game icons across a navy city skyline.">
 </picture>
 
 </div>
 
 ## About me
 
-I'm a final-year Business Information Systems student at STADIO in South Africa. I enjoy building web applications and business systems, especially where a bit of automation can make everyday work easier. My interests include inventory management, databases and reporting.
+I'm a final-year Business Information Systems student at STADIO in South Africa. I enjoy web development, programming and understanding how software fits into a business. My projects range from personal websites to Python simulations, Java applications and a full-stack course platform.
 
-For my final-year team project, I worked as one of the lead developers on Juno Aurora Haven, building stock updates, order administration and financial reports for a children's home. I like working through requirements with a team and turning them into practical features. Outside of development, I'm usually gaming or working on a personal website.
+For my final-year team project, I worked as one of the lead developers on Juno Aurora Haven, developing administration features and reporting for a children's home. I like working through requirements with a team and turning them into practical features. Outside of development, I'm usually gaming or working on a personal website.
 
 I'm available for an entry-level opportunity from **January 2027**.
 
@@ -25,7 +23,7 @@ I'm available for an entry-level opportunity from **January 2027**.
 
 | Project | What I worked on | Links |
 | :--- | :--- | :--- |
-| **Juno Aurora Haven** | Final-year project in a five-person team. Inventory updates after orders, returns and cancellations; product and order administration; income, profit and donation dashboards; PDF and Excel reports. Node.js, Express, Prisma and MySQL. | [Website](https://junoaurorahaven.org/) |
+| **Juno Aurora Haven** | Web application developed in a five-person team for a children's home. I contributed administration, stock automation and reporting features using Node.js, Express, Prisma and MySQL. | [Website](https://junoaurorahaven.org/) |
 | **Wedding Website** | A predominantly static wedding website with an OurSVP integration. The public demo uses fictional event details, with responsive pages, galleries and an animated invitation. | [Demo](https://luca-brandao.github.io/Wedding-Website-Demo/) · [Code](https://github.com/Luca-Brandao/Wedding-Website-Demo) |
 | **Birthday Comic** | A comic-style website with chapter navigation, a photo lightbox, bilingual controls and browser-generated audio. HTML, CSS and JavaScript. | [Demo](https://luca-brandao.github.io/Birthday-Comic-Demo/) · [Code](https://github.com/Luca-Brandao/Birthday-Comic-Demo) |
 
@@ -64,5 +62,6 @@ Issued by IT Varsity · 2025
 
 ## Connect
 
-<a href="mailto:lucabrandao366@gmail.com"><img src="assets/email.svg" width="24" height="24" alt="Email icon"> lucabrandao366@gmail.com</a> &nbsp; · &nbsp; <a href="https://www.linkedin.com/in/luca-brandao-a90961352/"><img src="assets/linkedin.svg" width="24" height="24" alt="LinkedIn icon"> LinkedIn</a>
-
+<p align="center">
+<a href="mailto:lucabrandao366@gmail.com" aria-label="Email Luca"><img src="assets/email.svg" width="36" height="36" alt="Email" title="Email"></a> &nbsp;&nbsp; <a href="https://www.linkedin.com/in/luca-brandao-a90961352/" aria-label="LinkedIn"><img src="assets/linkedin.svg" width="36" height="36" alt="LinkedIn" title="LinkedIn"></a>
+</p>

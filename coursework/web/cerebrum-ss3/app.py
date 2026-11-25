@@ -3,11 +3,12 @@ from flask_cors import CORS
 import json
 import os
 
-app = Flask(__name__, template_folder='frontend', static_folder='frontend')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__, template_folder=os.path.join(BASE_DIR, 'frontend'), static_folder=os.path.join(BASE_DIR, 'frontend'), static_url_path='/frontend')
 CORS(app)  
 
 # Ensure contact_submissions.json exists
-CONTACT_FILE = 'contact_submissions.json'
+CONTACT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'contact_submissions.json')
 if not os.path.exists(CONTACT_FILE):
     with open(CONTACT_FILE, 'w') as f:
         json.dump([], f)
@@ -57,7 +58,7 @@ def get_courses():
                     'Course Outline:\n- Week 1-2: Introduction to HTML and CSS\n- Week 3-4: JavaScript Basics\n- Week 5-6: Responsive Design\n- Week 7-8: Frontend Frameworks\n- Week 9-10: Web Application Architecture\n\n'
                     'Prerequisites: Basic understanding of computers and the internet.\n\n'
                     'Course Objectives: Design and develop responsive websites using modern web technologies.\n\n'
-                    'Academic Manager: John Doe, a seasoned IT curriculum builder with over 7 years of experience.\n\n'
+                    'Academic Manager: Alex Morgan, a seasoned IT curriculum builder with over 7 years of experience.\n\n'
                     'Outcome: Build and deploy fully functional, responsive websites and web applications.'
                 ),
                 'image': '/frontend/images/WebDevelopment.png'
@@ -73,7 +74,7 @@ def get_courses():
                     'Course Outline:\n- Week 1-2: Network Security Basics\n- Week 3-4: Threat Detection\n- Week 5-8: Encryption Techniques\n- Week 9-12: Penetration Testing\n\n'
                     'Prerequisites: Basic IT knowledge.\n\n'
                     'Course Objectives: Provide a comprehensive understanding of cybersecurity principles and practices.\n\n'
-                    'Instructor: Sarah Smith, a certified cybersecurity expert with extensive experience.\n\n'
+                    'Instructor: Jamie Reed, a certified cybersecurity expert with extensive experience.\n\n'
                     'Outcome: Gain hands-on experience in identifying vulnerabilities and implementing robust security measures.'
                 ),
                 'image': '/frontend/images/Cybersecurity.jpg'
@@ -89,7 +90,7 @@ def get_courses():
                     'Course Outline:\n- Week 1-3: Data Cleaning\n- Week 4-6: Statistical Analysis\n- Week 7-10: Machine Learning Basics\n- Week 11-15: Data Visualization\n\n'
                     'Prerequisites: Basic programming knowledge.\n\n'
                     'Course Objectives: Analyze data, build predictive models, and visualize insights using industry-standard tools.\n\n'
-                    'Instructor: Owethu Hlumakazi, a data science expert passionate about actionable insights.\n\n'
+                    'Instructor: Taylor Brooks, a data science expert passionate about actionable insights.\n\n'
                     'Outcome: Acquire skills to analyze complex datasets and build predictive models.'
                 ),
                 'image': '/frontend/images/DataScience.webp'
@@ -129,4 +130,4 @@ def contact_form():
         return jsonify({'error': 'Failed to process form submission'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=os.environ.get('FLASK_DEBUG') == '1', port=int(os.environ.get('PORT', '5000')))

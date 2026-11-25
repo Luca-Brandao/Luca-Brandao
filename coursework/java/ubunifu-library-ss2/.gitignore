@@ -9,7 +9,8 @@ out/
 .env
 .env.*
 !.env.example
-.DS_Store
-Thumbs.db
 contact_submissions.json
 testimonials.json
+Savanna Simulation.txt
+.DS_Store
+Thumbs.db

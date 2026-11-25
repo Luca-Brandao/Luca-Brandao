@@ -109,6 +109,12 @@ public class LibraryManagementSystem {
             System.out.println("4. Borrow a book");
             System.out.println("5. Close application");
             System.out.print("Choose an option: ");
+            if (!scanner.hasNextInt()) {
+                if (!scanner.hasNextLine()) break;
+                scanner.nextLine();
+                System.out.println("Please enter a menu number.");
+                continue;
+            }
             int choice = scanner.nextInt(); //Reads users input
             scanner.nextLine(); //Consumes a newline
 

@@ -29,7 +29,7 @@ quiz_questions = { "notable_figures": [
     "culture": [
         {"question": "What is the name of the African instrument that is also refered to as a thumb piano", #Question 8
          "options": ["Mbira", "Kora", "Djembe", "Balafon"],
-         "correct_answer": "Mbira or Kalimba"},
+         "correct_answer": "Mbira"},
         {"question": "In which African country can one find well-known rock-hewn churches ?", #Question 9
          "options": ["Ethiopia", "Egypt", "Sudan", "Kenya"],
          "correct_answer": "Ethiopia"},
@@ -121,6 +121,9 @@ def play_quiz(total_levels):
 #Generates the question based on the category selected
         question = generate_question(category,prev_questions)
 #Stores the selected question in the set of questions that were already displayed to the user 
+        if question is None:
+            print("No more questions available in this category.")
+            break
         prev_questions.add(question["question"])
         player_answer = get_player_answer(question)
         if player_answer is not None:
@@ -141,6 +144,7 @@ def play_quiz(total_levels):
 #Specified number of levels(10)
 total_levels = 10
 #Function that runs quiz for 10 levels
-play_quiz(total_levels)
+if __name__ == "__main__":
+    play_quiz(total_levels)
 
 

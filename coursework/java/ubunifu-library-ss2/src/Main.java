@@ -23,16 +23,16 @@ public class Main {
         LibraryUser[] libraryUsers = new LibraryUser[10];
         
         //Initializes each library user with the attributes/data name and userID also the attribute maxBooks
-        libraryUsers[0] = new LibraryUser("Luca Brandao", "UID001", 10);
-        libraryUsers[1] = new LibraryUser("Demo User Two", "UID002", 10);
-        libraryUsers[2] = new LibraryUser("Demo User Three", "UID003", 10);
-        libraryUsers[3] = new LibraryUser("Demo User Four", "UID004", 10);
-        libraryUsers[4] = new LibraryUser("Demo User Five", "UID005", 10);
-        libraryUsers[5] = new LibraryUser("Demo User Six", "UID006", 10);
-        libraryUsers[6] = new LibraryUser("Demo User Seven", "UID007", 10);
-        libraryUsers[7] = new LibraryUser("Demo User Eight", "UID0008", 10);
-        libraryUsers[8] = new LibraryUser("Demo User Nine", "UID009", 10);
-        libraryUsers[9] = new LibraryUser("Demo User Ten", "UID010", 10);
+        libraryUsers[0] = new LibraryUser("Demo Member One", "UID001", 10);
+        libraryUsers[1] = new LibraryUser("Demo Member Two", "UID002", 10);
+        libraryUsers[2] = new LibraryUser("Demo Member Three", "UID003", 10);
+        libraryUsers[3] = new LibraryUser("Demo Member Four", "UID004", 10);
+        libraryUsers[4] = new LibraryUser("Demo Member Five", "UID005", 10);
+        libraryUsers[5] = new LibraryUser("Demo Member Six", "UID006", 10);
+        libraryUsers[6] = new LibraryUser("Demo Member Seven", "UID007", 10);
+        libraryUsers[7] = new LibraryUser("Demo Member Eight", "UID0008", 10);
+        libraryUsers[8] = new LibraryUser("Demo Member Nine", "UID009", 10);
+        libraryUsers[9] = new LibraryUser("Demo Member Ten", "UID010", 10);
 
         //Prints the heading for testing for Task 2 on a newline
         System.out.println("Testing for Task 2:");
@@ -45,15 +45,15 @@ public class Main {
         System.out.println("------------------------------------------------------------------------------");
         
         //Testing for the getter and setter methods within the Book and LibraryUser classes by creating instances of users borrowing books
-        libraryUsers[0].borrowBook(booksInLibrary[1]); //Luca Brandao borrows "Season of Migration to the North"
-        libraryUsers[1].borrowBook(booksInLibrary[3]); //Demo User Two borrows "Nervous Conditions"
-        libraryUsers[2].borrowBook(booksInLibrary[2]); //Demo User Three borrows "Things Fall Apart"
-        libraryUsers[3].borrowBook(booksInLibrary[7]); //Demo User Four borrows "An Orchestra of Minorities"
-        libraryUsers[4].borrowBook(booksInLibrary[2]); //Demo User Five tries to borrow "Things Fall Apart" but it is unavailable
-        libraryUsers[5].borrowBook(booksInLibrary[5]); //Demo User Six borrows "Stay with Me"
-        libraryUsers[6].borrowBook(booksInLibrary[8]); //Demo User Seven borrows "The Old Drift"
-        libraryUsers[6].borrowBook(booksInLibrary[9]); //Demo User Seven borrows "Homegoing"
-        libraryUsers[6].borrowBook(booksInLibrary[4]); //Demo User Seven borrows "Graceland"
+        libraryUsers[0].borrowBook(booksInLibrary[1]); //Demo Member One borrows "Season of Migration to the North"
+        libraryUsers[1].borrowBook(booksInLibrary[3]); //Demo Member Two borrows "Nervous Conditions"
+        libraryUsers[2].borrowBook(booksInLibrary[2]); //Demo Member Three borrows "Things Fall Apart"
+        libraryUsers[3].borrowBook(booksInLibrary[7]); //Demo Member Four borrows "An Orchestra of Minorities"
+        libraryUsers[4].borrowBook(booksInLibrary[2]); //Demo Member Five tries to borrow "Things Fall Apart" but it is unavailable
+        libraryUsers[5].borrowBook(booksInLibrary[5]); //Demo Member Six borrows "Stay with Me"
+        libraryUsers[6].borrowBook(booksInLibrary[8]); //Demo Member Seven borrows "The Old Drift"
+        libraryUsers[6].borrowBook(booksInLibrary[9]); //Demo Member Seven borrows "Homegoing"
+        libraryUsers[6].borrowBook(booksInLibrary[4]); //Demo Member Seven borrows "Graceland"
         
         System.out.println("------------------------------------------------------------------------------");
         System.out.println();

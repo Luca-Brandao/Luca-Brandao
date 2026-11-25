@@ -132,7 +132,7 @@ with open("Savanna Simulation.txt", "w") as file:
         for species in Species:
             species_population = [ind for ind in population if ind["species"] == species]
             if species_population:
-                random_individual = r.choice([ind for ind in species_population if ind["age"] > 0])
+                random_individual = r.choice([ind for ind in species_population if ind["age"] > 0] or species_population)
                 file.write(f"{species}: Births - {births_by_species[species]}, Deaths - {deaths_by_species[species]}, Migrations - {migrations_by_species[species]}, Final Population - {len(species_population)}, Random Individual - Age: {random_individual['age']}, Health Status: {random_individual['health_status']}\n")
             else:
                 file.write(f"{species}: Births - {births_by_species[species]}, Deaths - {deaths_by_species[species]}, Migrations - {migrations_by_species[species]}, Final Population - 0, No individuals available\n")

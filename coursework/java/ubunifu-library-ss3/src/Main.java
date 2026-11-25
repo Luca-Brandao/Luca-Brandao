@@ -39,16 +39,16 @@ public class Main {
 
         // Array of library user objects to populate the user list for the library
         LibraryUser[] libraryUsers = {
-            new LibraryUser("Luca Brandao", "UID001"),
-            new LibraryUser("Demo User Two", "UID002"),
-            new LibraryUser("Demo User Three", "UID003"),
-            new LibraryUser("Demo User Four", "UID004"),
-            new LibraryUser("Demo User Five", "UID005"),
-            new LibraryUser("Demo User Six", "UID006"),
-            new LibraryUser("Demo User Seven", "UID007"),
-            new LibraryUser("Demo User Eight", "UID008"),
-            new LibraryUser("Demo User Nine", "UID009"),
-            new LibraryUser("Demo User Ten", "UID010")
+            new LibraryUser("Demo Member One", "UID001"),
+            new LibraryUser("Demo Member Two", "UID002"),
+            new LibraryUser("Demo Member Three", "UID003"),
+            new LibraryUser("Demo Member Four", "UID004"),
+            new LibraryUser("Demo Member Five", "UID005"),
+            new LibraryUser("Demo Member Six", "UID006"),
+            new LibraryUser("Demo Member Seven", "UID007"),
+            new LibraryUser("Demo Member Eight", "UID008"),
+            new LibraryUser("Demo Member Nine", "UID009"),
+            new LibraryUser("Demo Member Ten", "UID010")
         };
 
         // Adding each user to the library management system
@@ -85,6 +85,12 @@ public class Main {
             System.out.println("8. Search for a user");
             System.out.println("9. Exit");
             System.out.print("Select an option (1-9): ");
+            if (!scanner.hasNextInt()) {
+                if (!scanner.hasNextLine()) break;
+                scanner.nextLine();
+                System.out.println("Please enter a menu number.");
+                continue;
+            }
             int choice = scanner.nextInt();
             scanner.nextLine();  // Consumes newline character
 

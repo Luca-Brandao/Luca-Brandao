@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and render courses on courses.html
     if (document.getElementById('courses-container')) {
-        fetch('http://localhost:5000/api/courses', {
+        fetch('/api/courses', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         })
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 subject: document.getElementById('subject').value,
                 message: document.getElementById('message').value
             };
-            fetch('http://localhost:5000/api/contact', {
+            fetch('/api/contact', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)

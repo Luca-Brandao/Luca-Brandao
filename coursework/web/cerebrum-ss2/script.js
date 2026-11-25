@@ -65,14 +65,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Dynamic Content: Rotating Testimonials on Home Page
     const testimonials = [
-        { name: "Luca Brandao", text: "I enrolled in the data science course and I am impressed with the content and instructors.", rating: 5 },
-        { name: "David Lundie", text: "All courses are informative and well put together.", rating: 4 },
-        { name: "Warrick Smal", text: "Best free online IT courses around!", rating: 5 },
-        { name: "Lindo White", text: "Very Informative!", rating: 4 },
-        { name: "Robyn Johnson", text: "Recommended for those looking to upskill.", rating: 5 },
-        { name: "Brad Carneson", text: "The course for cyber-security helped me land my dream job!", rating: 5 },
-        { name: "Joji Pinkman", text: "Friendly and experienced course instructors.", rating: 5 },
-        { name: "Cristina Brandao", text: "Highly recommended.", rating: 4 }
+        { name: "Demo Learner 1", text: "I enrolled in the data science course and I am impressed with the content and instructors.", rating: 5 },
+        { name: "Demo Learner 2", text: "All courses are informative and well put together.", rating: 4 },
+        { name: "Demo Learner 3", text: "Best free online IT courses around!", rating: 5 },
+        { name: "Demo Learner 4", text: "Very Informative!", rating: 4 },
+        { name: "Demo Learner 5", text: "Recommended for those looking to upskill.", rating: 5 },
+        { name: "Demo Learner 6", text: "The course for cyber-security helped me land my dream job!", rating: 5 },
+        { name: "Demo Learner 7", text: "Friendly and experienced course instructors.", rating: 5 },
+        { name: "Demo Learner 8", text: "Highly recommended.", rating: 4 }
     ];
     let currentTestimonial = 0;
     const testimonialContent = document.getElementById('testimonial-content');

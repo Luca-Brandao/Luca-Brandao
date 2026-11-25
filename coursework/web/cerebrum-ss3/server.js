@@ -4,7 +4,7 @@ const path = require('path');
 const cors = require('cors');
 
 const app = express();
-const port = 3000;
+const port = Number(process.env.TESTIMONIALS_PORT || 3000);
 
 // Handle JSON requests and enable CORS
 app.use(express.json());
@@ -19,7 +19,7 @@ async function initializeTestimonialsFile() {
         await fs.writeFile(TESTIMONIALS_FILE, JSON.stringify([], null, 2));
     }
 }
-initializeTestimonialsFile();
+
 
 // API route to get testimonials
 app.get('/api/testimonials', async (req, res) => {
@@ -56,6 +56,12 @@ app.post('/api/testimonials', async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`Node.js server running at http://localhost:${port}`);
-});
+const ready = initializeTestimonialsFile();
+async function start() {
+    await ready;
+    return app.listen(port, () => console.log(`Node.js server running at http://localhost:${port}`));
+}
+if (require.main === module) {
+    start().catch(error => { console.error(error); process.exitCode = 1; });
+}
+module.exports = { app, ready, start };

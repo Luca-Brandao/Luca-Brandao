@@ -1,5 +1,13 @@
 import random
 
+african_wild_dogs_population = 21
+hyena_population = 17
+warthog_population = 25
+impala_population = 30
+zebra_population = 22
+cheetah_population = 15
+Species = ["African Wild Dog", "Hyena", "Warthog", "Impala", "Zebra", "Cheetah"]
+
 def initialize_population():
     population = []
     initial_counts = {"African Wild Dog": african_wild_dogs_population,"Hyena": hyena_population,"Warthog": warthog_population,"Impala": impala_population,"Zebra": zebra_population,"Cheetah": cheetah_population,}
