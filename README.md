@@ -31,10 +31,15 @@ I'm available for an entry-level opportunity from **January 2027**.
 
 | Project | Focus | Source |
 | :--- | :--- | :--- |
-| **Cerebrum Online IT Courses** | From HTML/CSS pages to JavaScript, Bootstrap, Flask and Express APIs. | [SS1](coursework/web/cerebrum-ss1) · [SS2](coursework/web/cerebrum-ss2) · [SS3](coursework/web/cerebrum-ss3) |
-| **Ubunifu Library** | Java classes, encapsulation, arrays, inheritance, collections, borrowing and returns. | [Foundations](coursework/java/ubunifu-library-ss2) · [Extended system](coursework/java/ubunifu-library-ss3) |
-| **Savanna Ecosystem Simulation** | Python population modelling, random events and text reporting. | [Code](coursework/python/savanna-ecosystem) |
-| **African History Quiz** | Python dictionaries, randomised questions, input validation and score tracking. | [Code](coursework/python/african-history-quiz) |
+| **Cerebrum Static Website** | HTML/CSS course pages, navigation and layouts. | [Repository](https://github.com/Luca-Brandao/Cerebrum-Static-Website) |
+| **Cerebrum Interactive Website** | JavaScript interactions, forms, responsive pages and testimonials. | [Repository](https://github.com/Luca-Brandao/Cerebrum-Interactive-Website) |
+| **Cerebrum Course Platform** | Bootstrap frontend, Flask course/contact API and Express testimonials service. | [Repository](https://github.com/Luca-Brandao/Cerebrum-Course-Platform) |
+| **Ubunifu Library Foundations** | Java classes, encapsulation, arrays, borrowing and returns. | [Repository](https://github.com/Luca-Brandao/Ubunifu-Library-Foundations) |
+| **Ubunifu Library Management** | Inheritance, collections, catalogue searching and member operations. | [Repository](https://github.com/Luca-Brandao/Ubunifu-Library-Management) |
+| **Savanna Ecosystem Simulation** | Python population modelling, random events and text reporting. | [Repository](https://github.com/Luca-Brandao/Savanna-Ecosystem-Simulation) |
+| **African History Quiz** | Python dictionaries, randomised questions, input validation and score tracking. | [Repository](https://github.com/Luca-Brandao/African-History-Quiz) |
+
+Each repository includes its source, setup instructions and a detailed project README. Sample identities are fictional.
 
 ## Tech stack
 
