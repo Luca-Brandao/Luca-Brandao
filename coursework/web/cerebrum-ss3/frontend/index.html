@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Online IT Courses - Learn IT skills at your own pace.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../frontend/css/styles.css">
+    <title>Home</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0077cc;">
+            <div class="container">
+                <a class="navbar-brand" href="/"><img src="../frontend/images/CerebrumLogo.png" alt="Cerebrum Online IT Courses Logo" class="navbar-logo">Cerebrum IT Courses</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/courses">Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contact">Contact Us</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="hero fade-in text-center text-white" style="background: #004a80; padding: 50px 20px;">
+            <div class="container">
+                <h1>Welcome to Our Online IT Courses</h1>
+                <p>Enhancing your IT career or just starting it? <br>
+                   Unlock your potential with flexible, expert-led online IT courses tailored to the constantly evolving digital world.</p>
+                <a href="/courses" class="cta-button">Start Learning Today!</a>
+            </div>
+        </section>
+        <section class="key-features fade-in container my-5">
+            <h2 class="text-center">Why Choose Us?</h2>
+            <div class="row text-center">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Flexible Learning</h5>
+                            <p class="card-text">Study at your own pace, anywhere, anytime.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Expert Instructors</h5>
+                            <p class="card-text">Learn from experienced industry professionals.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Wide Range of Courses</h5>
+                            <p class="card-text">From Web Development to Cybersecurity.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <img src="../frontend/images/ItStudents.avif" alt="IT students working on code." class="key-features-img img-fluid mt-4">
+        </section>
+        <section class="testimonials fade-in container my-5">
+            <h2 class="text-center">Testimonials From Our Students</h2>
+            <div id="testimonials-carousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" id="testimonial-content">
+                    <!-- Testimonials will be dynamically retrived and inserted here -->
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonials-carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonials-carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </section>
+    </main>
+    <footer class="text-center py-3" style="background: #0077cc; color: #fff;">
+        <p>© 2025 Online IT Courses. All Rights Reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../frontend/js/scripts.js"></script>
+</body>
+</html>

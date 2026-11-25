@@ -1,0 +1,282 @@
+/*General styling for the body*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #161616;
+    background: #f4f4f9;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/*Styling for the navigation bar*/
+header {
+    background: #0077cc;
+    color: #fff;
+    padding: 1rem 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/*Styling for the hero section found below the navigation bar*/
+.hero {
+    text-align: center;
+    background: #004a80;
+    color: #fff;
+    padding: 50px 20px;
+}
+
+.hero h1 {
+    margin: 0;
+}
+
+/*Styling for the call-to-action button*/
+.cta-button {
+    display: inline-block;
+    background: #ff6600;
+    color: #ffffff;
+    padding: 12px 24px;
+    margin-top: 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #b45100; 
+}
+
+/*Styling for most section containers to give them a card-like appearance*/
+.key-features,.course-list,.contact-info,.contact-form,.mission-statement {
+    max-width: 800px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+/*Styling for most sections level 2 headings*/
+.key-features h2,.course-list h2,.contact-form h2,.mission-statement h2 {
+    color: #0077cc;
+}
+
+/*Styling for the course card section and the images within it*/ 
+.course-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+}
+
+.course-card img {
+    width: 100%;
+    max-width: 500px; 
+    height: auto;
+    display: block;
+    margin: 20px auto; 
+    border-radius: 10px; 
+    border: 3px solid #00274D; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+/*Styling for the tables that are found in the course list section*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+/*Styling for the image found within the key-features container*/
+.key-features-img {
+    width: 100%;
+    max-width: 600px; 
+    height: auto;
+    display: block;
+    margin: 20px auto; 
+    border-radius: 10px; 
+    border: 3px solid #00274D; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+}
+
+/*Styling for the form elements as well as the submit button for the form*/
+form {
+    display: grid;
+    gap: 15px;
+}
+
+input, select, textarea, button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background: #0077cc;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #005a99;
+}
+
+/*Styling for the meet the team section and the images within it*/
+.meet-the-team {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.team-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 0px;
+}
+
+.team-member {
+    max-width: 400px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.team-member img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 4px solid #00274D;
+    object-fit: cover;
+}
+
+/*General styling for all level 3 headings used*/
+h3 {
+    margin: 10px 0 5px;
+    color: #00274D;
+}
+
+/*Reduces the paragraph spaceing slightly*/
+p {
+    margin: 5px 0;
+}
+
+/*Styling for the footer. Main serves to keep the footer at the bottom of the page*/
+main {
+    flex-grow: 1;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #0077cc;
+    color: #fff;
+}
+
+/*Media query for responsive design for small screens like smartphones (up to 768px)*/
+@media screen and (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        padding: 10px 0;
+    }
+
+    nav ul li {
+        margin: 10px 0;
+    }
+
+    .hero {
+        padding: 30px 15px;
+    }
+
+    .team-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .course-card img {
+        max-width: 100%;
+    }
+
+    .key-features, .course-list, .contact-info, 
+    .contact-form, .mission-statement {
+        margin: 20px 10px;
+        padding: 15px;
+    }
+
+    .cta-button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+}
+
+/*Media query for responsive design for medium-sized screens like tabelts (from 769px to 1024px)*/
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    nav ul {
+        justify-content: space-around;
+    }
+
+    .team-container {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .team-member {
+        max-width: 45%;
+    }
+
+    .course-card img {
+        max-width: 400px;
+    }
+
+    .key-features, .course-list, .contact-info,
+    .contact-form, .mission-statement {
+        max-width: 700px;
+    }
+}
+
+/*Responsive design for large screens like desktops (1025px and up)*/
+@media screen and (min-width: 1025px) {
+    nav ul {
+        gap: 30px;
+    }
+
+    .team-container {
+        gap: 20px;
+    }
+
+    .course-card img {
+        max-width: 500px;
+    }
+
+    .key-features, .course-list, .contact-info,
+    .contact-form, .mission-statement {
+        max-width: 800px;
+    }
+}
+
+
